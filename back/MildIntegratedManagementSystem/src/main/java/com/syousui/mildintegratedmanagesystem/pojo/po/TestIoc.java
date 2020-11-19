@@ -1,4 +1,4 @@
-package com.syousui.mildintegratedmanagesystem.model.po;
+package com.syousui.mildintegratedmanagesystem.pojo.po;
 
 import org.springframework.stereotype.Component;
 

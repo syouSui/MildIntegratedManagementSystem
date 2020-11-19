@@ -7,5 +7,5 @@ spring:
     username: mildUser
     password: mildUser
 mybatis:
-  typeAliasesPackage: com.syousui.mildintegratedmanagesystem.model
+  typeAliasesPackage: com.syousui.mildintegratedmanagesystem.pojo.po
   mapperLocations: classpath:mapper/*.xml

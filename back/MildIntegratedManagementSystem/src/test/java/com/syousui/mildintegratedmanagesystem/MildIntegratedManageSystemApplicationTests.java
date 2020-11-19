@@ -1,6 +1,6 @@
 package com.syousui.mildintegratedmanagesystem;
 
-import com.syousui.mildintegratedmanagesystem.model.po.TestIoc;
+import com.syousui.mildintegratedmanagesystem.pojo.po.TestIoc;
 import com.syousui.mildintegratedmanagesystem.utils.SpringUtil;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

@@ -6,8 +6,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @SpringBootApplication
-@MapperScan ("com.syousui.dao")
-@EnableTransactionManagement()
+@MapperScan ( "com.syousui.mildintegratedmanagesystem.dao" )
+@EnableTransactionManagement ()
 public class MildIntegratedManageSystemApplication {
 
     public static void main ( String[] args ) {

@@ -1,6 +1,6 @@
 package com.syousui.mildintegratedmanagesystem.controller;
 
-import com.syousui.mildintegratedmanagesystem.model.po.TestIoc;
+import com.syousui.mildintegratedmanagesystem.pojo.po.TestIoc;
 import com.syousui.mildintegratedmanagesystem.utils.SpringUtil;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
