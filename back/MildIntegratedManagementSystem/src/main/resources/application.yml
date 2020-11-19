@@ -1,0 +1,11 @@
+server:
+  port: 8888
+spring:
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://acmaker.vip/mild_intergrated_manage_system?useUnicode=true&characterEncoding=UTF-8
+    username: mildUser
+    password: mildUser
+mybatis:
+  typeAliasesPackage: com.syousui.mildintegratedmanagesystem.model
+  mapperLocations: classpath:mapper/*.xml
