@@ -1,6 +1,6 @@
 package com.syousui.mildintegratedmanagesystem.controller;
 
-import com.syousui.mildintegratedmanagesystem.pojo.po.TestIoc;
+import com.syousui.mildintegratedmanagesystem.mapper.UserMapper;
 import com.syousui.mildintegratedmanagesystem.utils.SpringUtil;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,10 +24,4 @@ public class TestController {
         return "hello /Test/test";
     }
 
-    @GetMapping ( "/testIoc" )
-    public String testIoc ( ) {
-        TestIoc testIoc = SpringUtil.getBean( TestIoc.class );
-        System.out.println( SpringUtil.getBean( "testIoc" ).toString( ) );
-        return SpringUtil.getBean( "testIoc" ).toString( );
-    }
 }
