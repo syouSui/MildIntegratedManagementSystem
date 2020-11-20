@@ -3,7 +3,7 @@ server:
 spring:
   datasource:
     driver-class-name: com.mysql.jdbc.Driver
-    url: jdbc:mysql://acmaker.vip/mild_integrated_manage_system?useUnicode=true&amp;characterEncoding=UTF-8
+    url: jdbc:mysql://acmaker.vip/mild_integrated_manage_system?useUnicode=true&amp;serverTimezone=GMT%2B8&amp;characterEncoding=UTF-8
     username: mildUser
     password: mildUser
 mybatis:
