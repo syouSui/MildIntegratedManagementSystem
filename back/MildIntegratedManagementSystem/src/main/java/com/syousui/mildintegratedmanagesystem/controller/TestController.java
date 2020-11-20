@@ -6,6 +6,7 @@ import com.syousui.mildintegratedmanagesystem.pojo.vo.ResultVo;
 import com.syousui.mildintegratedmanagesystem.service.UserService;
 import com.syousui.mildintegratedmanagesystem.utils.JsonUtil;
 import com.syousui.mildintegratedmanagesystem.utils.SpringUtil;
+import io.swagger.annotations.*;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
@@ -19,6 +20,7 @@ import java.util.HashMap;
  * @Description : TODO
  */
 
+@Api ( tags = "测试接口" )
 @RestController ()
 @RequestMapping ( "/Test" )
 public class TestController {
@@ -28,19 +30,29 @@ public class TestController {
         return "hello /Test/test";
     }
 
+    @ApiOperation ( value = "分页获取用户测试数据" )
+    @ApiImplicitParams ( {
+            @ApiImplicitParam ( name = "pageNum", value = "页面编码", required = true, paramType = "query", dataType = "JsonNode" ),
+            @ApiImplicitParam ( name = "pageSize", value = "页面大小", required = true, paramType = "query", dataType = "JsonNode" )
+    } )
     @GetMapping ( "/getJson" )
-    public String json_get ( ) {
+    public String json_get ( @RequestBody JsonNode jsonNode ) {
         System.out.println( "test jon1111" );
-        UserService userService = SpringUtil.getBean( UserService.class );
         return JsonUtil.beanToJson(
                 new ResultVo(
                         ResultVo.CODE_SUCCESS,
                         "success",
-                        userService.selectAll( 1, 10 )
+                        SpringUtil.getBean( UserService.class ).selectAll(
+                                jsonNode.at( "/pageNum" ).asInt( ), jsonNode.at( "/pageSize" ).asInt( )
+                        )
                 )
         );
     }
 
+    @ApiOperation ( value = "测试用户注册" )
+    @ApiImplicitParams ( {
+            @ApiImplicitParam ( name = "user", value = "用户类", required = true, paramType = "query", dataType = "User" )
+    } )
     @PostMapping ( "/setJson1" )
     public String json_set1 ( @RequestBody User user ) {
         System.out.println( "" + user + "" );
@@ -53,9 +65,13 @@ public class TestController {
         );
     }
 
+    @ApiOperation ( value = "测试自定义json" )
+    @ApiImplicitParams ( {
+            @ApiImplicitParam ( name = "state", value = "状态", required = true, paramType = "query", dataType = "JsonNode" ),
+            @ApiImplicitParam ( name = "content", value = "内容", required = true, paramType = "query", dataType = "JsonNode" )
+    } )
     @PostMapping ( "/setJson2" )
-    public String json_set2 (
-            @RequestBody JsonNode jsonNode ) {
+    public String json_set2 ( @RequestBody JsonNode jsonNode ) {
         System.out.println( jsonNode.at( "/state" ).asInt( ) + ", " + jsonNode.at( "/content" ).asText( ) );
         return JsonUtil.beanToJson(
                 new ResultVo(

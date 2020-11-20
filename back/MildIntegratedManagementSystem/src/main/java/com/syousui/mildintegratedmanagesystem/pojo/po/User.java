@@ -1,7 +1,10 @@
 package com.syousui.mildintegratedmanagesystem.pojo.po;
 
+import io.swagger.annotations.ApiModel;
+
 import java.util.Date;
 
+@ApiModel( value="User" ,description="系统用户" )
 public class User {
     private Integer userId;
 

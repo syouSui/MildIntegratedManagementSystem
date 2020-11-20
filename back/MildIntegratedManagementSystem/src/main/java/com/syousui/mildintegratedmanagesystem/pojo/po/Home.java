@@ -1,7 +1,10 @@
 package com.syousui.mildintegratedmanagesystem.pojo.po;
 
+import io.swagger.annotations.ApiModel;
+
 import java.util.Date;
 
+@ApiModel( value="Home" ,description="房屋发布信息" )
 public class Home {
     private Integer homeId;
 

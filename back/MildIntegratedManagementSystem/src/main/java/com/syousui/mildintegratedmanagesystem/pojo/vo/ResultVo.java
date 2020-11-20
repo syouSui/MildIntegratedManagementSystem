@@ -1,7 +1,6 @@
 package com.syousui.mildintegratedmanagesystem.pojo.vo;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import io.swagger.annotations.ApiModel;
 
 /**
  * @author : acmaker
@@ -12,6 +11,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
  * @Description : TODO
  */
 
+@ApiModel ( value = "ResultVo", description = "传输结果集" )
 public class ResultVo {
     public static final int CODE_FAILED = 0;
     public static final int CODE_SUCCESS = 1;
