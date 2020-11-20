@@ -1,11 +1,11 @@
 package com.syousui.mildintegratedmanagesystem;
 
 import com.syousui.mildintegratedmanagesystem.mapper.HomeMapper;
-import com.syousui.mildintegratedmanagesystem.mapper.HomeTypeMapper;
 import com.syousui.mildintegratedmanagesystem.mapper.UserMapper;
+import com.syousui.mildintegratedmanagesystem.pojo.dto.Page;
 import com.syousui.mildintegratedmanagesystem.pojo.po.Home;
-import com.syousui.mildintegratedmanagesystem.pojo.po.HomeType;
 import com.syousui.mildintegratedmanagesystem.pojo.po.User;
+import com.syousui.mildintegratedmanagesystem.service.UserService;
 import com.syousui.mildintegratedmanagesystem.utils.SpringUtil;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -32,11 +32,20 @@ class MildIntegratedManageSystemApplicationTests {
         for ( Home home : homeList ) {
             System.out.println( home.toString( ) );
         }
+    }
 
-        HomeTypeMapper homeTypeMapper = SpringUtil.getBean( HomeTypeMapper.class );
-        List<HomeType> homeTypeList = homeTypeMapper.selectAll( );
-        for ( HomeType homeType : homeTypeList ) {
-            System.out.println( homeType.toString( ) );
+    @Test
+    public void testService ( ) {
+        UserService userService = SpringUtil.getBean( UserService.class );
+        Page page = userService.selectAll( 1, 10 );
+        System.out.println(
+                "pageNum: " + page.getPageNum( ) + "\n" +
+                        "pageSize: " + page.getPageSize( ) + "\n" +
+                        "pageTotal: " + page.getPageTotal( ) + "\n" +
+                        "totalSize: " + page.getTotalSize( ) + "\n"
+        );
+        for ( User user : (List<User>) page.getContent( ) ) {
+            System.out.println( user );
         }
     }
 

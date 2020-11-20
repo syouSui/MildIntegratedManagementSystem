@@ -1,9 +1,11 @@
 package com.syousui.mildintegratedmanagesystem.mapper;
 
 import com.syousui.mildintegratedmanagesystem.pojo.po.User;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+@Repository
 public interface UserMapper {
     int deleteByPrimaryKey(Integer userId);
 

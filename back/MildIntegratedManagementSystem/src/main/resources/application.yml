@@ -9,3 +9,8 @@ spring:
 mybatis:
   typeAliasesPackage: com.syousui.mildintegratedmanagesystem.pojo.po
   mapperLocations: classpath:mapper/*.xml
+pagehelper:
+  helperDialect: mysql
+  reasonable: false
+  params: count=countSql
+  supportMethodsArguments: true

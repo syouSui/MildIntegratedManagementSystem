@@ -8,8 +8,9 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @SpringBootApplication
 @MapperScan ( "com.syousui.mildintegratedmanagesystem.mapper" )
-@EnableTransactionManagement ()
+@ComponentScan ( "com.syousui.mildintegratedmanagesystem.mapper" )
 @ComponentScan ( "com.syousui.mildintegratedmanagesystem.service" )
+@EnableTransactionManagement ()
 public class MildIntegratedManageSystemApplication {
 
     public static void main ( String[] args ) {
