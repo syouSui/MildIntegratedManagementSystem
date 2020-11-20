@@ -6,6 +6,19 @@ spring:
     url: jdbc:mysql://acmaker.vip/mild_integrated_manage_system?useUnicode=true&amp;serverTimezone=GMT%2B8&amp;characterEncoding=UTF-8
     username: mildUser
     password: mildUser
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
+    locale: zh
+    serialization:
+      indent_output: true #格式化输出
+      fail_on_empty_beans: false #忽略无法转换的对象
+    default-property-inclusion: non_null # 忽略 null 值的输出
+    deserialization:
+      fail_on_unknown_properties: false #允许对象忽略json中不存在的属性
+    parser:
+      allow_unquoted_control_chars: true #允许出现特殊字符和转义符
+      allow_single_quotes: false #允许出现单引号
 mybatis:
   typeAliasesPackage: com.syousui.mildintegratedmanagesystem.pojo.po
   mapperLocations: classpath:mapper/*.xml

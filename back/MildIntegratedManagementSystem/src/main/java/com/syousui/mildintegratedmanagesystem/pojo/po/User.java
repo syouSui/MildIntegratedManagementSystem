@@ -13,7 +13,7 @@ public class User {
 
     private String avatarUrl;
 
-    private Integer phone;
+    private String phone;
 
     private String email;
 
@@ -61,11 +61,11 @@ public class User {
         this.avatarUrl = avatarUrl == null ? null : avatarUrl.trim( );
     }
 
-    public Integer getPhone ( ) {
+    public String getPhone ( ) {
         return phone;
     }
 
-    public void setPhone ( Integer phone ) {
+    public void setPhone ( String phone ) {
         this.phone = phone;
     }
 
@@ -96,7 +96,7 @@ public class User {
     public User ( ) {
     }
 
-    public User ( String username, String password, Integer role, String avatarUrl, Integer phone, String email, Date createdTime, Date updatedTime ) {
+    public User ( String username, String password, Integer role, String avatarUrl, String phone, String email, Date createdTime, Date updatedTime ) {
         this.username = username;
         this.password = password;
         this.role = role;
@@ -107,7 +107,7 @@ public class User {
         this.updatedTime = updatedTime;
     }
 
-    public User ( Integer userId, String username, String password, Integer role, String avatarUrl, Integer phone, String email, Date createdTime, Date updatedTime ) {
+    public User ( Integer userId, String username, String password, Integer role, String avatarUrl, String phone, String email, Date createdTime, Date updatedTime ) {
         this.userId = userId;
         this.username = username;
         this.password = password;
@@ -123,6 +123,7 @@ public class User {
     public String toString ( ) {
         return "[ User: " +
                 userId + ", " +
+                username + ", " +
                 password + ", " +
                 role + ", " +
                 avatarUrl + ", " +
