@@ -53,6 +53,23 @@ public class Home {
         this.homeTypeId = homeTypeId;
     }
 
+    public Home ( ) {
+    }
+
+    public Home ( String title, Double price, Date updatedTime, Integer homeTypeId ) {
+        this.title = title;
+        this.price = price;
+        this.updatedTime = updatedTime;
+        this.homeTypeId = homeTypeId;
+    }
+
+    public Home ( Integer homeId, String title, Double price, Date updatedTime, Integer homeTypeId ) {
+        this.homeId = homeId;
+        this.title = title;
+        this.price = price;
+        this.updatedTime = updatedTime;
+        this.homeTypeId = homeTypeId;
+    }
     @Override
     public String toString ( ) {
         return "[ Home: ]" +

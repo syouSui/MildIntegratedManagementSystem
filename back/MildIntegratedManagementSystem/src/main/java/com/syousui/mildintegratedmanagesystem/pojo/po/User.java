@@ -93,6 +93,32 @@ public class User {
         this.updatedTime = updatedTime;
     }
 
+    public User ( ) {
+    }
+
+    public User ( String username, String password, Integer role, String avatarUrl, Integer phone, String email, Date createdTime, Date updatedTime ) {
+        this.username = username;
+        this.password = password;
+        this.role = role;
+        this.avatarUrl = avatarUrl;
+        this.phone = phone;
+        this.email = email;
+        this.createdTime = createdTime;
+        this.updatedTime = updatedTime;
+    }
+
+    public User ( Integer userId, String username, String password, Integer role, String avatarUrl, Integer phone, String email, Date createdTime, Date updatedTime ) {
+        this.userId = userId;
+        this.username = username;
+        this.password = password;
+        this.role = role;
+        this.avatarUrl = avatarUrl;
+        this.phone = phone;
+        this.email = email;
+        this.createdTime = createdTime;
+        this.updatedTime = updatedTime;
+    }
+
     @Override
     public String toString ( ) {
         return "[ User: " +
