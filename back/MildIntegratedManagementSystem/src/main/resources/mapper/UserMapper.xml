@@ -2,34 +2,19 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.syousui.mildintegratedmanagesystem.mapper.UserMapper">
   <resultMap id="BaseResultMap" type="com.syousui.mildintegratedmanagesystem.pojo.po.User">
-    <id column="user_id" jdbcType="INTEGER" property="userId" />
-    <result column="username" jdbcType="VARCHAR" property="username" />
-    <result column="password" jdbcType="VARCHAR" property="password" />
-    <result column="role" jdbcType="INTEGER" property="role" />
-    <result column="avatar_url" jdbcType="VARCHAR" property="avatarUrl" />
-    <result column="phone" jdbcType="INTEGER" property="phone" />
-    <result column="email" jdbcType="VARCHAR" property="email" />
-    <result column="created_time" jdbcType="TIMESTAMP" property="createdTime" />
-    <result column="updated_time" jdbcType="TIMESTAMP" property="updatedTime" />
+    <id column="user_id" jdbcType="INTEGER" property="userId"/>
+    <result column="username" jdbcType="VARCHAR" property="username"/>
+    <result column="password" jdbcType="VARCHAR" property="password"/>
+    <result column="role" jdbcType="INTEGER" property="role"/>
+    <result column="avatar_url" jdbcType="VARCHAR" property="avatarUrl"/>
+    <result column="phone" jdbcType="INTEGER" property="phone"/>
+    <result column="email" jdbcType="VARCHAR" property="email"/>
+    <result column="created_time" jdbcType="TIMESTAMP" property="createdTime"/>
+    <result column="updated_time" jdbcType="TIMESTAMP" property="updatedTime"/>
   </resultMap>
   <sql id="Base_Column_List">
     user_id, username, password, role, avatar_url, phone, email, created_time, updated_time
   </sql>
-  <select id="selectAll" resultMap="BaseResultMap">
-    select
-    <include refid="Base_Column_List" />
-    from sys_users
-  </select>
-  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select 
-    <include refid="Base_Column_List" />
-    from sys_users
-    where user_id = #{userId,jdbcType=INTEGER}
-  </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-    delete from sys_users
-    where user_id = #{userId,jdbcType=INTEGER}
-  </delete>
   <insert id="insert" parameterType="com.syousui.mildintegratedmanagesystem.pojo.po.User">
     insert into sys_users (user_id, username, password, 
       role, avatar_url, phone, 
@@ -101,6 +86,10 @@
       </if>
     </trim>
   </insert>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from sys_users
+    where user_id = #{userId,jdbcType=INTEGER}
+  </delete>
   <update id="updateByPrimaryKeySelective" parameterType="com.syousui.mildintegratedmanagesystem.pojo.po.User">
     update sys_users
     <set>
@@ -143,4 +132,47 @@
       updated_time = #{updatedTime,jdbcType=TIMESTAMP}
     where user_id = #{userId,jdbcType=INTEGER}
   </update>
+  <select id="selectSelective" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from sys_users
+    <where>
+      <if test="userId != null">
+        and user_id = #{userId}
+      </if>
+      <if test="username != null">
+        <bind name="handledUsername" value="'%'+title+'%'"/>
+        and username = #{handledUsername}
+      </if>
+      <if test="password != null">
+        and password = #{password}
+      </if>
+      <if test="role != null">
+        and role = #{role}
+      </if>
+      <if test="avatarUrl != null">
+        and avator_url = #{avatorUrl}
+      </if>
+      <if test="phone != null">
+        and phone = #{phone}
+      </if>
+      <if test="createdTime != null">
+        and created_time between #{createdTimeFrom} and #{createdTimeTo}
+      </if>
+      <if test="updatedTime != null">
+        and updated_time between #{updatedTimeFrom} and #{updatedTimeTo}
+      </if>
+    </where>
+  </select>
+  <!--  <select id="selectAll" resultMap="BaseResultMap">-->
+  <!--    select-->
+  <!--    <include refid="Base_Column_List"/>-->
+  <!--    from sys_users-->
+  <!--  </select>-->
+  <!--  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">-->
+  <!--    select-->
+  <!--    <include refid="Base_Column_List"/>-->
+  <!--    from sys_users-->
+  <!--    where user_id = #{userId,jdbcType=INTEGER}-->
+  <!--  </select>-->
 </mapper>

@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
 import java.util.List;
 
 
@@ -29,11 +30,25 @@ public class UserServiceImpl implements UserService {
     private UserMapper userMapper;
 
     @Override
-    public Page selectAll ( int pageNum, int pageSize ) {
+    public Page selectSelective ( int pageNum, int pageSize,
+                                  Integer userId,
+                                  String username, String password,
+                                  Integer role,
+                                  String avatarUrl,
+                                  String phone, String email,
+                                  Date createdTime, Date updatedTime ) {
         PageHelper.startPage( pageNum, pageSize );
-        List<User> userList = userMapper.selectAll( );
+        List<User> userList = userMapper.selectSelective(
+                userId == 0 ? null : userId,
+                "".equals( username ) ? null : username, "".equals( password ) ? null : password,
+                role,
+                "".equals( avatarUrl ) ? null : avatarUrl,
+                "".equals( phone ) ? null : phone, "".equals( email ) ? null : email,
+                createdTime, updatedTime
+        );
         return new Page(
                 new PageInfo<>( userList )
+
         );
     }
 }

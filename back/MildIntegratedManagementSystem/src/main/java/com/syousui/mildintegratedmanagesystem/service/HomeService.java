@@ -1,6 +1,10 @@
 package com.syousui.mildintegratedmanagesystem.service;
 
 import com.syousui.mildintegratedmanagesystem.pojo.dto.Page;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.Date;
+import java.util.List;
 
 /**
  * @author : acmaker
@@ -12,5 +16,22 @@ import com.syousui.mildintegratedmanagesystem.pojo.dto.Page;
  */
 
 public interface HomeService {
-    Page selectAll ( int pageNum, int pageSize );
+    Page selectSelective ( int pageNum, int pageSize,
+                           Integer homeId,
+                           String title,
+                           Double priceFrom, Double priceTo,
+                           Date dateFrom, Date dateTo,
+                           List<Integer> homeTypeIdList
+    );
+//    Page selectAll ( int pageNum, int pageSize );
+//
+//    Page selectByPrimaryKey ( int pageNum, int pageSize, Integer homeId );
+//
+//    Page selectByLikeTitle ( int pageNum, int pageSize, String title );
+//
+//    Page selectByPriceRange ( int pageNum, int pageSize, Double from, Double to );
+//
+//    Page selectByDateRange ( int pageNum, int pageSize, Date from, Date to );
+//
+//    Page selectByHomeTypeId ( int pageNum, int pageSize, List<Integer> list );
 }

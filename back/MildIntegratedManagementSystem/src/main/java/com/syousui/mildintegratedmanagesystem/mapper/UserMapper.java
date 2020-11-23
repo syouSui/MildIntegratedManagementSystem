@@ -1,23 +1,34 @@
 package com.syousui.mildintegratedmanagesystem.mapper;
 
 import com.syousui.mildintegratedmanagesystem.pojo.po.User;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.Date;
 import java.util.List;
 
 @Repository
 public interface UserMapper {
-    int deleteByPrimaryKey(Integer userId);
+    int insert ( User record );
 
-    int insert(User record);
+    int insertSelective ( User record );
 
-    int insertSelective(User record);
+    int deleteByPrimaryKey ( Integer userId );
 
-    List<User> selectAll ();
+    int updateByPrimaryKeySelective ( User record );
 
-    User selectByPrimaryKey(Integer userId);
+    int updateByPrimaryKey ( User record );
 
-    int updateByPrimaryKeySelective(User record);
+    List<User> selectSelective (
+            @Param ( "userId" ) Integer userId,
+            @Param ( "username" ) String username, @Param ( "password" ) String password,
+            @Param ( "role" ) Integer role,
+            @Param ( "avatarUrl" ) String avatarUrl,
+            @Param ( "phone" ) String phone, @Param ( "email" ) String email,
+            @Param ( "createdTime" ) Date createdTime, @Param ( "updatedTime" ) Date updatedTime
+    );
 
-    int updateByPrimaryKey(User record);
+//    List<User> selectAll ();
+//
+//    User selectByPrimaryKey(Integer userId);
 }

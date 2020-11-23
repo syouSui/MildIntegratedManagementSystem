@@ -11,27 +11,6 @@
   <sql id="Base_Column_List">
     home_id, title, price, updated_time, home_type_id
   </sql>
-  <select id="selectAll" resultMap="BaseResultMap">
-    select
-    <include refid="Base_Column_List"/>
-    from home
-  </select>
-  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select
-    <include refid="Base_Column_List"/>
-    from home
-    where home_id = #{homeId,jdbcType=INTEGER}
-  </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-    delete from home
-    where home_id = #{homeId,jdbcType=INTEGER}
-  </delete>
-  <insert id="insert" parameterType="com.syousui.mildintegratedmanagesystem.pojo.po.Home">
-    insert into home (home_id, title, price, 
-      updated_time, home_type_id)
-    values (#{homeId,jdbcType=INTEGER}, #{title,jdbcType=VARCHAR}, #{price,jdbcType=DOUBLE}, 
-      #{updatedTime,jdbcType=TIMESTAMP}, #{homeTypeId,jdbcType=INTEGER})
-  </insert>
   <insert id="insertSelective" parameterType="com.syousui.mildintegratedmanagesystem.pojo.po.Home">
     insert into home
     <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -69,6 +48,16 @@
       </if>
     </trim>
   </insert>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from home
+    where home_id = #{homeId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.syousui.mildintegratedmanagesystem.pojo.po.Home">
+    insert into home (home_id, title, price, 
+      updated_time, home_type_id)
+    values (#{homeId,jdbcType=INTEGER}, #{title,jdbcType=VARCHAR}, #{price,jdbcType=DOUBLE}, 
+      #{updatedTime,jdbcType=TIMESTAMP}, #{homeTypeId,jdbcType=INTEGER})
+  </insert>
   <update id="updateByPrimaryKeySelective" parameterType="com.syousui.mildintegratedmanagesystem.pojo.po.Home">
     update home
     <set>
@@ -95,4 +84,70 @@
       home_type_id = #{homeTypeId,jdbcType=INTEGER}
     where home_id = #{homeId,jdbcType=INTEGER}
   </update>
+  <select id="selectSelective" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from home
+    <where> <!-- 在此处只处理null, 像0, 0.0, '', ""等则需要在 服务层处理为 null 传递过来 -->
+      <if test="homeId != null">
+        and home_id = #{homeId}
+      </if>
+      <if test="title != null">
+        <bind name="handledTitle" value="'%'+title+'%'"/> <!-- 坑! 若title 为 null, bind标签也会绑定! 一直报错!!! -->
+        and title like #{handledTitle}
+      </if>
+      <if test="priceFrom != null and priceTo != null">
+        and price between #{priceFrom} and #{priceTo}
+      </if>
+      <if test="dateFrom != null and dateTo != null">
+        and updated_time between #{dateFrom} and #{dateTo}
+      </if>
+      <if test="homeTypeIdList != null">
+        and home_type_id in
+        <foreach index="i" item="e" collection="homeTypeIdList" separator="," open="(" close=")">
+          #{e, jdbcType=INTEGER}
+        </foreach>
+      </if>
+    </where>
+  </select>
+  <!--  <select id="selectAll" resultMap="BaseResultMap">-->
+  <!--    select-->
+  <!--    <include refid="Base_Column_List"/>-->
+  <!--    from home-->
+  <!--  </select>-->
+  <!--  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">-->
+  <!--    select-->
+  <!--    <include refid="Base_Column_List"/>-->
+  <!--    from home-->
+  <!--    where home_id = #{homeId,jdbcType=INTEGER}-->
+  <!--  </select>-->
+  <!--  <select id="selectByLikeTitle" parameterType="java.lang.String" resultMap="BaseResultMap">-->
+  <!--    <bind name="handledTitle" value="'%'+title+'%'"/>-->
+  <!--    select-->
+  <!--    <include refid="Base_Column_List"/>-->
+  <!--    from home-->
+  <!--    where title like #{handledTitle}-->
+  <!--  </select>-->
+  <!--  <select id="selectByPriceRange" parameterType="java.lang.Double" resultMap="BaseResultMap">-->
+  <!--    select-->
+  <!--    <include refid="Base_Column_List"/>-->
+  <!--    from home-->
+  <!--    where price between #{from} and #{to}-->
+  <!--  </select>-->
+  <!--  <select id="selectByDateRange" parameterType="java.util.Date" resultMap="BaseResultMap">-->
+  <!--    select-->
+  <!--    <include refid="Base_Column_List"/>-->
+  <!--    from home-->
+  <!--    where updated_time between #{from} and #{to}-->
+  <!--  </select>-->
+  <!--  <select id="selectByHomeTypeId" parameterType="java.util.List" resultMap="BaseResultMap">-->
+  <!--    select-->
+  <!--    <include refid="Base_Column_List"/>-->
+  <!--    from home-->
+  <!--    where 1=1 and-->
+  <!--    home_type_id in-->
+  <!--    <foreach index="i" item="e" collection="list" separator="," open="(" close=")">-->
+  <!--      #{e, jdbcType=INTEGER}-->
+  <!--    </foreach>-->
+  <!--  </select>-->
 </mapper>

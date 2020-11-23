@@ -22,6 +22,11 @@ spring:
 mybatis:
   typeAliasesPackage: com.syousui.mildintegratedmanagesystem.pojo.po
   mapperLocations: classpath:mapper/*.xml
+#  configuration:
+#    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+logging:
+  level:
+    com.syousui.mildintegratedmanagesystem.mapper: debug
 pagehelper:
   helperDialect: mysql
   reasonable: false

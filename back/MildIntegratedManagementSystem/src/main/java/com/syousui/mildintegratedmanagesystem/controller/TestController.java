@@ -3,7 +3,9 @@ package com.syousui.mildintegratedmanagesystem.controller;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.syousui.mildintegratedmanagesystem.pojo.po.User;
 import com.syousui.mildintegratedmanagesystem.pojo.vo.ResultVo;
+import com.syousui.mildintegratedmanagesystem.service.HomeService;
 import com.syousui.mildintegratedmanagesystem.service.UserService;
+import com.syousui.mildintegratedmanagesystem.utils.DateUtil;
 import com.syousui.mildintegratedmanagesystem.utils.JsonUtil;
 import com.syousui.mildintegratedmanagesystem.utils.SpringUtil;
 import io.swagger.annotations.*;
@@ -42,8 +44,15 @@ public class TestController {
                 new ResultVo(
                         ResultVo.CODE_SUCCESS,
                         "success",
-                        SpringUtil.getBean( UserService.class ).selectAll(
-                                jsonNode.at( "/pageNum" ).asInt( ), jsonNode.at( "/pageSize" ).asInt( )
+                        SpringUtil.getBean( UserService.class ).selectSelective(
+                                jsonNode.at( "/pageNum" ).asInt( ), jsonNode.at( "/pageSize" ).asInt( ),
+                                jsonNode.at( "/userId" ).asInt( ),
+                                jsonNode.at( "/username" ).asText( ), jsonNode.at( "/password" ).asText( ),
+                                jsonNode.at( "/role" ).asInt( ),
+                                jsonNode.at( "/avatarUrl" ).asText( ),
+                                jsonNode.at( "/phone" ).asText( ), jsonNode.at( "/email" ).asText( ),
+                                DateUtil.asDate( jsonNode.at( "/createdTime" ).asText( ) ),
+                                DateUtil.asDate( jsonNode.at( "/updatedTime" ).asText( ) )
                         )
                 )
         );
@@ -83,6 +92,27 @@ public class TestController {
                                 put( "content", jsonNode.at( "/content" ).asText( ) + "988YU2IYU2IH2SF4568956948498479SDF" );
                             }
                         }
+                )
+        );
+    }
+
+    @GetMapping ( "/testHomeSelectSelective" )
+    public String testLike ( @RequestBody JsonNode jsonNode ) {
+//        System.out.println( jsonNode.at( "/homeId" ).asText( )  );
+        System.out.println( "/testHomeSelectSelective" );
+        return JsonUtil.beanToJson(
+                new ResultVo(
+                        ResultVo.CODE_SUCCESS,
+                        "success",
+                        SpringUtil.getBean( HomeService.class ).selectSelective(
+                                jsonNode.at( "/pageNum" ).asInt( ), jsonNode.at( "/pageSize" ).asInt( ),
+                                jsonNode.at( "/homeId" ).asInt( ),
+                                jsonNode.at( "/title" ).asText( ),
+                                jsonNode.at( "/priceFrom" ).asDouble( ), jsonNode.at( "/priceTo" ).asDouble( ),
+                                DateUtil.asDate( jsonNode.at( "/dateFrom" ).asText( ) ),
+                                DateUtil.asDate( jsonNode.at( "/dateTo" ).asText( ) ),
+                                JsonUtil.jsonNodeToIntList( jsonNode.at( "/homeTypeIdList" ) )
+                        )
                 )
         );
     }

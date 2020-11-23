@@ -2,6 +2,8 @@ package com.syousui.mildintegratedmanagesystem.service;
 
 import com.syousui.mildintegratedmanagesystem.pojo.dto.Page;
 
+import java.util.Date;
+
 /**
  * @author : acmaker
  * @version : 1.0.0
@@ -12,5 +14,12 @@ import com.syousui.mildintegratedmanagesystem.pojo.dto.Page;
  */
 
 public interface UserService {
-    Page selectAll ( int pageNum, int pageSize );
+    Page selectSelective ( int pageNum, int pageSize,
+                           Integer userId,
+                           String username, String password,
+                           Integer role,
+                           String avatarUrl,
+                           String phone, String email,
+                           Date createdTime, Date updatedTime
+    );
 }

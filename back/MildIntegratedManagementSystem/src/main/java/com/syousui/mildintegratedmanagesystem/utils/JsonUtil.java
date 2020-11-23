@@ -1,6 +1,10 @@
 package com.syousui.mildintegratedmanagesystem.utils;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author : acmaker
@@ -39,4 +43,12 @@ public class JsonUtil {
 //            return null;
 //        }
 //    }
+
+    public static List<Integer> jsonNodeToIntList ( JsonNode jsonNode ) {
+        List<Integer> list = new ArrayList<>( );
+        for ( JsonNode node : jsonNode ) {
+            list.add( node.asInt( ) );
+        }
+        return list;
+    }
 }
