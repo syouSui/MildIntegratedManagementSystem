@@ -13,6 +13,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 @SpringBootTest
@@ -83,6 +84,13 @@ class MildIntegratedManageSystemApplicationTests {
         for ( Home home : homeList ) {
             System.out.println( home.toString( ) );
         }
+    }
+
+    @Test
+    public void testNull () {
+//        System.out.println( null==0 );
+//        System.out.println( DateUtil.getSystemTime() );
+        System.out.println( new Date() );
     }
 
 }

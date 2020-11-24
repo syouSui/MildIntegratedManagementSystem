@@ -31,6 +31,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Page selectSelective ( int pageNum, int pageSize,
+                                  Boolean isUsernameLike,
                                   Integer userId,
                                   String username, String password,
                                   Integer role,
@@ -39,7 +40,8 @@ public class UserServiceImpl implements UserService {
                                   Date createdTime, Date updatedTime ) {
         PageHelper.startPage( pageNum, pageSize );
         List<User> userList = userMapper.selectSelective(
-                userId == 0 ? null : userId,
+                isUsernameLike,
+                userId == null || userId == 0 ? null : userId,
                 "".equals( username ) ? null : username, "".equals( password ) ? null : password,
                 role,
                 "".equals( avatarUrl ) ? null : avatarUrl,
@@ -50,5 +52,24 @@ public class UserServiceImpl implements UserService {
                 new PageInfo<>( userList )
 
         );
+    }
+
+    public int insert ( User user, Boolean isForced ) {
+        user.setAvatarUrl( "".equals( user.getAvatarUrl( ) ) || null == user.getAvatarUrl( ) ?
+                null : user.getAvatarUrl( )
+        );
+        return isForced ?
+                userMapper.insert( user ) :
+                userMapper.insertSelective( user );
+    }
+
+    public int update ( User user, Boolean isForced ) {
+        return isForced ?
+                userMapper.updateByPrimaryKey( user ) :
+                userMapper.updateByPrimaryKeySelective( user );
+    }
+    @Override
+    public int delete ( Integer userId ) {
+        return userMapper.deleteByPrimaryKey( userId );
     }
 }

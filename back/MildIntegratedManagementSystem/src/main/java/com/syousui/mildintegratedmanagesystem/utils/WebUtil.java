@@ -23,37 +23,7 @@ import java.util.List;
  */
 
 @Component
-public class WebUtil implements ServletContextListener, HttpSessionListener, ServletRequestListener {
-    @Override
-    public void contextInitialized ( ServletContextEvent sce ) {
-        userList = new LinkedList<>( );
-    }
-
-    @Override
-    public void contextDestroyed ( ServletContextEvent sce ) {
-    }
-
-    @Override
-    public void sessionCreated ( HttpSessionEvent se ) {
-        maxOnlineNumber = Math.max( maxOnlineNumber, ++onlineNumber );
-    }
-
-    @Override
-    public void sessionDestroyed ( HttpSessionEvent se ) {
-        maxOnlineNumber = Math.max( maxOnlineNumber, --onlineNumber );
-        logOut();
-    }
-
-    @Override
-    public void requestInitialized ( ServletRequestEvent sre ) {
-
-    }
-
-    @Override
-    public void requestDestroyed ( ServletRequestEvent sre ) {
-
-    }
-
+public class WebUtil{
     @Autowired
     private static HttpSession session;
 
@@ -123,9 +93,16 @@ public class WebUtil implements ServletContextListener, HttpSessionListener, Ser
         session.setAttribute( "USER", user );
     }
 
-    public static void logOut ( ) {
-        userList.remove( session.getAttribute( "USER" ) );
-        session.removeAttribute( "USER" );
+    public static boolean logOut ( ) {
+        boolean state = true;
+        try {
+            userList.remove( session.getAttribute( "USER" ) );
+            session.removeAttribute( "USER" );
+        } catch ( Exception e ) {
+            e.printStackTrace();
+            state = false;
+        }
+        return state;
     }
 
     public static User fetchUser ( ) {

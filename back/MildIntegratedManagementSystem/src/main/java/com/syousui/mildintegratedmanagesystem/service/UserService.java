@@ -1,6 +1,7 @@
 package com.syousui.mildintegratedmanagesystem.service;
 
 import com.syousui.mildintegratedmanagesystem.pojo.dto.Page;
+import com.syousui.mildintegratedmanagesystem.pojo.po.User;
 
 import java.util.Date;
 
@@ -15,6 +16,7 @@ import java.util.Date;
 
 public interface UserService {
     Page selectSelective ( int pageNum, int pageSize,
+                           Boolean isUsernameLike,
                            Integer userId,
                            String username, String password,
                            Integer role,
@@ -22,4 +24,10 @@ public interface UserService {
                            String phone, String email,
                            Date createdTime, Date updatedTime
     );
+
+    public int insert ( User user, Boolean isForced );
+
+    public int update ( User user, Boolean isForced );
+
+    public int delete ( Integer userId );
 }

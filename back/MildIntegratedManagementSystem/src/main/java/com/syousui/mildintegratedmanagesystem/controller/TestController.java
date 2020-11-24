@@ -11,6 +11,7 @@ import com.syousui.mildintegratedmanagesystem.utils.SpringUtil;
 import io.swagger.annotations.*;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.HashMap;
 
 /**
@@ -46,6 +47,7 @@ public class TestController {
                         "success",
                         SpringUtil.getBean( UserService.class ).selectSelective(
                                 jsonNode.at( "/pageNum" ).asInt( ), jsonNode.at( "/pageSize" ).asInt( ),
+                                false,
                                 jsonNode.at( "/userId" ).asInt( ),
                                 jsonNode.at( "/username" ).asText( ), jsonNode.at( "/password" ).asText( ),
                                 jsonNode.at( "/role" ).asInt( ),
@@ -98,6 +100,7 @@ public class TestController {
 
     @GetMapping ( "/testHomeSelectSelective" )
     public String testLike ( @RequestBody JsonNode jsonNode ) {
+        System.out.println( new Date() );
 //        System.out.println( jsonNode.at( "/homeId" ).asText( )  );
         System.out.println( "/testHomeSelectSelective" );
         return JsonUtil.beanToJson(

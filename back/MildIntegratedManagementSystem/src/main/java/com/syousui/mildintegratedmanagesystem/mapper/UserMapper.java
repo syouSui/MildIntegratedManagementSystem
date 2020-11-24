@@ -20,6 +20,7 @@ public interface UserMapper {
     int updateByPrimaryKey ( User record );
 
     List<User> selectSelective (
+            @Param ( "isUsernameLike" ) Boolean isUsernameLike,
             @Param ( "userId" ) Integer userId,
             @Param ( "username" ) String username, @Param ( "password" ) String password,
             @Param ( "role" ) Integer role,

@@ -141,8 +141,13 @@
         and user_id = #{userId}
       </if>
       <if test="username != null">
-        <bind name="handledUsername" value="'%'+title+'%'"/>
-        and username = #{handledUsername}
+        <if test="isUsernameLike == true">
+          <bind name="handledUsername" value="'%'+title+'%'"/>
+          and username = #{handledUsername}
+        </if>
+        <if test="isUsernameLike == false">
+          and username = #{username}
+        </if>
       </if>
       <if test="password != null">
         and password = #{password}

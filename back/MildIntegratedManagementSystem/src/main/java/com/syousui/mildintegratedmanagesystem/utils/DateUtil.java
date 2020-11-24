@@ -28,6 +28,7 @@ public class DateUtil {
         }
         return date;
     }
+
     public static String asString ( Date date ) {
         return simpleDateFormat.format( date );
     }

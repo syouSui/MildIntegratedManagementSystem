@@ -17,6 +17,8 @@ import java.util.List;
  * 分页返回结果
  */
 public class Page {
+    public static final int DEFAULT_PAGE_SIZE = 15;
+
     //    当前页码
     private int pageNum;
     //    每页数量
