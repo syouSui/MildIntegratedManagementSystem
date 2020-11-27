@@ -21,20 +21,20 @@
 
               <v-form>
                 <v-text-field
+                  v-model="email"
                   name="login"
                   label="Email Address"
                   type="text"
                   required
-                  v-model="email"
                   :rules="emailRules"
                 />
                 <v-text-field
                   id="password"
+                  v-model="password"
                   name="Password"
                   label="Password"
                   type="password"
                   required
-                  v-model="password"
                   :rules="passwordRules"
                 />
               </v-form>
