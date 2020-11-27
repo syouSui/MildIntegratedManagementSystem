@@ -8,6 +8,12 @@
           contain
           height="200"
         />
+        <v-img
+          alt="Vue logo"
+          :src="require('../assets/logo.png')"
+          contain
+          height="200"
+        />
       </v-col>
 
       <v-col class="mb-4">
