@@ -82,24 +82,24 @@
           hide-details
         ></v-slider>
         <v-switch
-          v-model="showTabsView"
+          v-model="isShowTabsView"
           label="菜单选项卡"
           thumb-label
           hide-details
         ></v-switch>
         <v-switch
-          v-model="showMiniNav"
+          v-model="isShowMiniDrawer"
           label="迷你菜单栏"
           thumb-label
           hide-details
         ></v-switch>
         <v-switch
-          v-model="backgroundNav"
+          v-model="isShowDrawerBackground"
           label="菜单栏背景色"
           hide-details
         ></v-switch>
         <v-switch
-          v-model="$vuetify.theme.dark"
+          v-model="isShowDarkMode"
           label="夜间模式"
           hide-details
         ></v-switch>
@@ -112,11 +112,11 @@
       v-model="isOpenLeftDrawer"
       app
       width="250"
-      :mini-variant="showMiniNav"
+      :mini-variant="isShowMiniDrawer"
       mini-variant-width="64"
       src="../assets/background.png"
-      :color="backgroundNav ? 'primary' : null"
-      :dark="backgroundNav"
+      :color="isShowDrawerBackground ? 'primary' : null"
+      :dark="isShowDrawerBackground"
       hide-overlay
       clipped
       class="pt-2"
@@ -130,7 +130,7 @@
             class="white--text"
             :prepend-icon="list.icon"
             :active-class="
-              backgroundNav || $vuetify.theme.dark
+              isShowDrawerBackground || $vuetify.theme.dark
                 ? 'white--text'
                 : 'grey--text text--darken-3'
             "
@@ -187,7 +187,7 @@
     <v-main app class="divider pb-12" :style="background">
       <v-expand-transition>
         <v-tabs
-          v-show="showTabsView && tabList.length"
+          v-show="isShowTabsView && tabList.length"
           color="secondary"
           style="position: sticky; top: 64px;z-index: 5"
           show-arrows
@@ -211,7 +211,7 @@
         </v-tabs>
       </v-expand-transition>
       <v-menu
-        v-model="tabMenu"
+        v-model="isShoTabRightClickMenu"
         :position-x="x"
         :position-y="y"
         absolute
@@ -265,16 +265,17 @@ export default {
       navList: navList,
       tabList: [],
       showSetting: false,
-      showMiniNav: false,
-      showTabsView: true,
-      backgroundNav: true,
+      isShowTabsView: true,
+      isShowMiniDrawer: false,
+      isShowDrawerBackground: false,
+      isShowDarkMode: false,
       appBarShadow: 6,
+      isShoTabRightClickMenu: false,
       background: {
         backgroundImage: `url(${require('../assets/background.png')})`,
         backgroundAttachment: 'fixed',
       },
       fullscreenIcon: 'mdi-fullscreen',
-      tabMenu: false,
       x: 0,
       y: 0,
       isOpenLeftDrawer: !(
@@ -329,20 +330,21 @@ export default {
           title: to.meta,
         });
     },
-    tabsView(val) {
-      localStorage.setItem('tabsView', val);
+    isShowTabsView(val) {
+      localStorage.setItem('isShowTabsView', val);
     },
-    miniNav(val) {
-      localStorage.setItem('miniNav', val);
+    isShowMiniDrawer(val) {
+      localStorage.setItem('isShowMiniDrawer', val);
     },
-    backgroundNav(val) {
-      localStorage.setItem('backgroundNav', val);
+    isShowDrawerBackground(val) {
+      localStorage.setItem('isShowDrawerBackground', val);
+    },
+    isShowDarkMode(val) {
+      this.$vuetify.theme.dark = val;
+      localStorage.setItem('isShowDarkMode', val);
     },
     appBarShadow(val) {
       localStorage.setItem('appBarShadow', val);
-    },
-    dark(val) {
-      localStorage.setItem('dark', val);
     },
     lightPrimary(val) {
       localStorage.setItem('lightPrimary', val);
@@ -371,12 +373,19 @@ export default {
       path: this.$route.path,
       title: this.$route.meta,
     });
-    this.showTabsView = JSON.parse(localStorage.getItem('tabsView') || true);
-    this.showMiniNav = JSON.parse(localStorage.getItem('miniNav') || false);
-    this.backgroundNav = JSON.parse(
-      localStorage.getItem('backgroundNav') || true
+    this.isShowTabsView = JSON.parse(
+      localStorage.getItem('isShowTabsView') || true
     );
-    this.appbarShadow = localStorage.getItem('appBarShadow') || 4;
+    this.isShowMiniDrawer = JSON.parse(
+      localStorage.getItem('isShowMiniDrawer') || false
+    );
+    this.isShowDrawerBackground = JSON.parse(
+      localStorage.getItem('isShowDrawerBackground') || false
+    );
+    this.isShowDarkMode = JSON.parse(
+      localStorage.getItem('isShowDarkMode') || false
+    );
+    this.appBarShadow = JSON.parse(localStorage.getItem('appBarShadow') || 6);
   },
 
   methods: {
@@ -393,11 +402,11 @@ export default {
     showMenu(e) {
       e.preventDefault();
       this.index = e.target.name;
-      this.tabMenu = false;
+      this.isShoTabRightClickMenu = false;
       this.x = e.clientX;
       this.y = e.clientY;
       this.$nextTick(() => {
-        this.tabMenu = true;
+        this.isShoTabRightClickMenu = true;
       });
     },
     closeCurrentTab(index) {
@@ -423,11 +432,21 @@ export default {
       let list = this.tabList[index];
       this.tabList = [];
       this.tabList.push(list);
-      this.$router.push(list.path);
+      this.$router.push(list.path).catch(() => {});
     },
     closeAllTab() {
       this.tabList = [];
-      this.$router.push('/home');
+      this.tabList.push({
+        name: 'Welcome',
+        path: '/Home/Welcome',
+        title: '欢迎使用',
+      });
+      this.$router
+        .push({
+          name: 'Welcome',
+          path: '/Home/Welcome',
+        })
+        .catch(() => {});
     },
   },
 };
