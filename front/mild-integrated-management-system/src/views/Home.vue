@@ -10,20 +10,22 @@
       dark
       height="64"
     >
+      <v-app-bar-nav-icon
+        class="ml-2"
+        @click.stop="isOpenLeftDrawer = !isOpenLeftDrawer"
+      ></v-app-bar-nav-icon>
       <v-toolbar-title>
-        <v-avatar
-          size="40px"
-          color="blue lighten-3"
-          class="mx-3"
-          style="transform: rotate(180deg)"
-        >
-          <v-icon dark>
-            Mild
-          </v-icon>
-        </v-avatar>
-        <span>
-          轻度综合管理系统
-        </span>
+        <!--        <v-avatar-->
+        <!--          size="30px"-->
+        <!--          color="blue lighten-3"-->
+        <!--          class="mx-3"-->
+        <!--          style="transform: rotate(180deg)"-->
+        <!--        >-->
+        <!--          <v-icon dark @click.stop="isOpenLeftDrawer = !isOpenLeftDrawer">-->
+        <!--            Mild-->
+        <!--          </v-icon>-->
+        <!--        </v-avatar>-->
+        <span> 轻度综合管理系统 </span>
       </v-toolbar-title>
       <v-spacer></v-spacer>
       <v-toolbar-items>
@@ -107,6 +109,7 @@
 
     <!--  left drawer begin  -->
     <v-navigation-drawer
+      v-model="isOpenLeftDrawer"
       app
       width="250"
       :mini-variant="showMiniNav"
@@ -274,6 +277,10 @@ export default {
       tabMenu: false,
       x: 0,
       y: 0,
+      isOpenLeftDrawer: !(
+        this.$vuetify.breakpoint.name === 'xs' ||
+        this.$vuetify.breakpoint.name === 'sm'
+      ),
       isDisabledUserItem: !this.$api.user.getRole(),
     };
   },
@@ -355,6 +362,7 @@ export default {
     // console.log('\n');
     // console.log(this.axios);
     // console.log(this.$store);
+    // console.log(this.$vuetify.breakpoint.name);
     console.log('User role is: ' + this.$api.user.getRole());
     // console.log('\n');
     // console.log(navList);
