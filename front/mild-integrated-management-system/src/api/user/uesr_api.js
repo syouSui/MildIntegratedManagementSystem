@@ -14,6 +14,7 @@ let user = {
       role = 2;
       // todo:
       // vue.axios.get
+      // store.getters['user/getState'] =
     }
     return role;
   },

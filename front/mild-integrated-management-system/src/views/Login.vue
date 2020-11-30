@@ -1,86 +1,85 @@
 <template>
-  <v-app>
-    <v-main app>
-      <v-container class="pt-16 mt-16">
-        <v-row justify="center" align="center">
-          <v-col xs="12" sm="6" md="6" lg="6" xl="6">
-            <v-card class="px-2">
-              <v-card-title>
-                <v-container>
-                  <v-row justify="center">
-                    <v-avatar size="60px" color="blue lighten-3">
-                      <v-icon dark> Mild </v-icon>
-                    </v-avatar>
-                  </v-row>
-                  <v-row justify="center" class="pt-3">
-                    <div class="headline">
-                      Sign in
-                    </div>
-                  </v-row>
-                </v-container>
-              </v-card-title>
+  <v-main app>
+    <!--  fill-height: set the height v-container is 100%  -->
+    <v-container fill-height style="padding-bottom: 15vh;">
+      <v-row justify="center" align="center">
+        <v-col xs="12" sm="6" md="6" lg="6" xl="6">
+          <v-card class="px-2">
+            <v-card-title>
+              <v-container>
+                <v-row justify="center">
+                  <v-avatar size="60px" color="blue lighten-3">
+                    <v-icon dark> Mild </v-icon>
+                  </v-avatar>
+                </v-row>
+                <v-row justify="center" class="pt-3">
+                  <div class="headline">
+                    Sign in
+                  </div>
+                </v-row>
+              </v-container>
+            </v-card-title>
 
-              <v-card-text>
-                <v-form>
-                  <v-text-field
-                    v-model="username"
-                    name="username"
-                    label="Username"
-                    type="text"
-                    :counter="20"
-                    required
-                    :error-messages="usernameErrors"
-                    @input="$v.username.$touch()"
-                    @blur="$v.username.$touch()"
-                  />
-                  <v-text-field
-                    id="password"
-                    v-model="password"
-                    name="password"
-                    label="Password"
-                    :type="isShowPassword ? 'text' : 'password'"
-                    :counter="20"
-                    :append-icon="isShowPassword ? 'mdi-eye' : 'mdi-eye-off'"
-                    required
-                    :error-messages="passwordErrors"
-                    @click:append="isShowPassword = !isShowPassword"
-                    @change="$v.password.$touch()"
-                    @blur="$v.password.$touch()"
-                  />
-                  <v-checkbox
-                    v-model="isRemember"
-                    label="Remember password."
-                    required
-                  ></v-checkbox>
-                </v-form>
-              </v-card-text>
-              <v-card-actions>
-                <v-container>
-                  <v-row justify="end">
-                    <v-btn color="info" @click="clear()">
-                      Clear
-                    </v-btn>
-                  </v-row>
-                  <v-row class="mt-6">
-                    <v-btn block color="primary" @click="submit"> Login </v-btn>
-                  </v-row>
-                  <v-row class="my-6">
-                    <v-btn
-                      block
-                      color="secondary"
-                      @click="$router.push('/Register')"
-                    >
-                      Register
-                    </v-btn>
-                  </v-row>
-                </v-container>
-              </v-card-actions>
-            </v-card>
-          </v-col>
-        </v-row>
-      </v-container>
-    </v-main>
-  </v-app>
+            <v-card-text>
+              <v-form>
+                <v-text-field
+                  v-model="username"
+                  name="username"
+                  label="Username"
+                  type="text"
+                  :counter="20"
+                  required
+                  :error-messages="usernameErrors"
+                  @input="$v.username.$touch()"
+                  @blur="$v.username.$touch()"
+                />
+                <v-text-field
+                  id="password"
+                  v-model="password"
+                  name="password"
+                  label="Password"
+                  :type="isShowPassword ? 'text' : 'password'"
+                  :counter="20"
+                  :append-icon="isShowPassword ? 'mdi-eye' : 'mdi-eye-off'"
+                  required
+                  :error-messages="passwordErrors"
+                  @click:append="isShowPassword = !isShowPassword"
+                  @change="$v.password.$touch()"
+                  @blur="$v.password.$touch()"
+                />
+                <v-checkbox
+                  v-model="isRemember"
+                  label="Remember password."
+                  required
+                ></v-checkbox>
+              </v-form>
+            </v-card-text>
+            <v-card-actions>
+              <v-container>
+                <v-row justify="end">
+                  <v-btn color="info" @click="clear()">
+                    Clear
+                  </v-btn>
+                </v-row>
+                <v-row class="mt-6">
+                  <v-btn block color="primary" @click="submit"> Login </v-btn>
+                </v-row>
+                <v-row class="my-6">
+                  <v-btn
+                    block
+                    color="secondary"
+                    @click="$router.push('/Register')"
+                  >
+                    Register
+                  </v-btn>
+                </v-row>
+              </v-container>
+            </v-card-actions>
+          </v-card>
+        </v-col>
+      </v-row>
+    </v-container>
+  </v-main>
 </template>
 
 <script>

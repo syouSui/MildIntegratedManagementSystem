@@ -1,5 +1,6 @@
 <template>
-  <v-app>
+  <!-- 在Home.vue中顶级根元素使用div, 使用container会导致tab偏移. -->
+  <div>
     <!--  app bar begin  -->
     <v-app-bar
       app
@@ -157,9 +158,18 @@
             :key="list.title"
             active-class="secondary white--text"
             :to="list.path"
+            :disabled="list.title === '用户管理' && isDisabledUserItem"
           >
             <v-list-item-action
-              ><v-icon v-text="list.icon"></v-icon
+              ><v-icon
+                :style="{
+                  color:
+                    list.title === '用户管理' && isDisabledUserItem
+                      ? 'grey'
+                      : 'white',
+                }"
+                v-text="list.icon"
+              ></v-icon
             ></v-list-item-action>
             <v-list-item-content>
               <v-list-item-title v-text="list.title"></v-list-item-title>
@@ -232,14 +242,13 @@
       </keep-alive>
     </v-main>
     <!--  components view page  -->
-  </v-app>
+  </div>
 </template>
 
 <script>
 // @ is an alias to /src
 import screenfull from 'screenfull';
 import navList from '@/views/Navigation';
-import api from '@/api';
 
 export default {
   name: 'Home',
@@ -265,6 +274,7 @@ export default {
       tabMenu: false,
       x: 0,
       y: 0,
+      isDisabledUserItem: !this.$api.user.getRole(),
     };
   },
 
@@ -345,7 +355,7 @@ export default {
     // console.log('\n');
     // console.log(this.axios);
     // console.log(this.$store);
-    console.log('User role is: ' + api.user.getRole());
+    console.log('User role is: ' + this.$api.user.getRole());
     // console.log('\n');
     // console.log(navList);
     this.tabList.push({
