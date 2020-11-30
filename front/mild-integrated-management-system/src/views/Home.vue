@@ -287,6 +287,18 @@ export default {
   },
 
   computed: {
+    lightPrimary() {
+      return this.$vuetify.theme.themes.light.primary;
+    },
+    lightSecondary() {
+      return this.$vuetify.theme.themes.light.secondary;
+    },
+    darkPrimary() {
+      return this.$vuetify.theme.themes.dark.primary;
+    },
+    darkSecondary() {
+      return this.$vuetify.theme.themes.dark.secondary;
+    },
     primarySet: {
       get: function() {
         return this.$vuetify.theme.dark

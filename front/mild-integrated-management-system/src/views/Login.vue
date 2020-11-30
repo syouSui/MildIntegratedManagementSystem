@@ -8,7 +8,7 @@
             <v-card-title>
               <v-container>
                 <v-row justify="center">
-                  <v-avatar size="60px" color="blue lighten-3">
+                  <v-avatar size="60px" color="secondary lighten-3">
                     <v-icon dark> Mild </v-icon>
                   </v-avatar>
                 </v-row>
