@@ -268,7 +268,7 @@ export default {
       showMiniNav: false,
       showTabsView: true,
       backgroundNav: true,
-      appBarShadow: 4,
+      appBarShadow: 6,
       background: {
         backgroundImage: `url(${require('../assets/background.png')})`,
         backgroundAttachment: 'fixed',
