@@ -239,6 +239,7 @@
 // @ is an alias to /src
 import screenfull from 'screenfull';
 import navList from '@/views/Navigation';
+import api from '@/api';
 
 export default {
   name: 'Home',
@@ -341,6 +342,11 @@ export default {
   },
 
   mounted() {
+    // console.log('\n');
+    // console.log(this.axios);
+    // console.log(this.$store);
+    console.log('User role is: ' + api.user.getRole());
+    // console.log('\n');
     // console.log(navList);
     this.tabList.push({
       name: this.$route.name,

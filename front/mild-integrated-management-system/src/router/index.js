@@ -1,5 +1,6 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
+import api from '@/api';
 
 Vue.use(VueRouter);
 
@@ -95,16 +96,41 @@ const routes = [
       },
       {
         path: '/Home/User',
-        name: 'Motion',
+        name: 'User',
         component: () => import('@/views/user/User'),
         meta: '用户管理',
       },
     ],
   },
+  {
+    path: '/404',
+    name: '404',
+    component: () => import('@/views/defaultPage/404'),
+  },
+  {
+    path: '/403',
+    name: '403',
+    component: () => import('@/views/defaultPage/403'),
+  },
 ];
 
 const router = new VueRouter({
   routes,
+});
+
+router.beforeEach((to, from, next) => {
+  console.log(to.name);
+  console.log(api.name);
+  if (to.matched.length === 0) {
+    next('/404');
+  } else if (to.name === 'User') {
+    console.log('enter user page');
+    // should check the role of current user.
+    // But now, for use temp variable role for development.
+    let role = api.user.getRole();
+    if (role) next();
+    else next('/403');
+  } else next();
 });
 
 export default router;

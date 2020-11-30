@@ -59,4 +59,9 @@ Plugin.install = function(Vue, options) {
 
 Vue.use(Plugin);
 
-export default Plugin;
+export default {
+  // export this Plugin is for vue to install plugin and we can use in vue components.
+  Plugin,
+  // export this axios is for api.js to use.
+  axios: _axios,
+};
