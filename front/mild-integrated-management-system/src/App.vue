@@ -1,5 +1,5 @@
 <template>
-  <v-app>
+  <v-app :style="background">
     <router-view></router-view>
   </v-app>
 </template>
@@ -12,6 +12,10 @@ export default {
 
   data: () => ({
     //
+    background: {
+      backgroundImage: `url(${require('./assets/background.png')})`,
+      backgroundAttachment: 'fixed',
+    },
   }),
   methods: {},
 };

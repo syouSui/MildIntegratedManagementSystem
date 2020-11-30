@@ -119,6 +119,7 @@
       :dark="isShowDrawerBackground"
       hide-overlay
       clipped
+      :style="background"
     >
       <v-list flat class="pt-0">
         <template v-for="list in navList">
@@ -183,7 +184,10 @@
     <!--  left drawer end  -->
 
     <!--  components view page  -->
-    <v-main app class="divider pb-12" :style="background">
+    <v-main app class="pb-12">
+      <!--  Don't use background color for v-main.  -->
+      <!--   So annotation this main for backup.   -->
+      <!--    <v-main app class="divider pb-12">-->
       <v-expand-transition>
         <v-tabs
           v-show="isShowTabsView && tabList.length"
