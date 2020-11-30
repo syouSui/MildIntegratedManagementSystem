@@ -31,7 +31,7 @@ const routes = [
         path: '/Home/Welcome',
         name: 'Welcome',
         component: () => import('../views/defaultPage/Welcome.vue'),
-        meta: '欢迎使用!',
+        meta: '欢迎使用',
       },
       {
         path: '/Home/system/EmploymentManage',
@@ -93,24 +93,6 @@ const routes = [
         component: () => import('../views/system/ProviderManage.vue'),
         meta: '供应商信息管理系统',
       },
-      // {
-      //   path: '/Home/plugin/prism',
-      //   name: 'Prism',
-      //   component: () => import('@/views/plugin/prism'),
-      //   meta: '使用Prismjs',
-      // },
-      // {
-      //   path: '/Home/plugin/icons',
-      //   name: 'Icons',
-      //   component: () => import('@/views/plugin/icons'),
-      //   meta: '材质图标',
-      // },
-      // {
-      //   path: '/Home/bulb/motion',
-      //   name: 'Motion',
-      //   component: () => import('@/views/bulb/motion'),
-      //   meta: '转场动画',
-      // },
       {
         path: '/Home/User',
         name: 'Motion',

@@ -190,7 +190,7 @@
             <v-icon
               v-if="item.title != '首页'"
               size="20"
-              @click.stop.prevent="closeTab(i)"
+              @click.stop.prevent="closeCurrentTab(i)"
               @contextmenu.stop.prevent=""
               >mdi-close</v-icon
             >
@@ -208,19 +208,19 @@
         <v-list dense>
           <v-list-item
             v-ripple="{ class: 'secondary--text' }"
-            @click="closeTab(index)"
+            @click="closeCurrentTab(index)"
           >
             <v-list-item-title>关闭</v-list-item-title>
           </v-list-item>
           <v-list-item
             v-ripple="{ class: 'secondary--text' }"
-            @click="closeOther(index)"
+            @click="closeOtherTab(index)"
           >
             <v-list-item-title>关闭其他</v-list-item-title>
           </v-list-item>
           <v-list-item
             v-ripple="{ class: 'secondary--text' }"
-            @click="closeAll"
+            @click="closeAllTab"
           >
             <v-list-item-title>关闭所有</v-list-item-title>
           </v-list-item>
@@ -376,17 +376,27 @@ export default {
         this.tabMenu = true;
       });
     },
-    closeTab(index) {
+    closeCurrentTab(index) {
       this.tabList.splice(index, 1);
-      this.$router.push(this.tabList[this.tabList.length - 1].path);
+      if (!this.tabList.length) {
+        this.tabList.push({
+          name: 'Welcome',
+          path: '/Home/Welcome',
+          title: '欢迎使用',
+        });
+        this.$router.push({
+          name: 'Welcome',
+          path: '/Home/Welcome',
+        });
+      } else this.$router.push(this.tabList[this.tabList.length - 1].path);
     },
-    closeOther(index) {
+    closeOtherTab(index) {
       let list = this.tabList[index];
       this.tabList = [];
       this.tabList.push(list);
       this.$router.push(list.path);
     },
-    closeAll() {
+    closeAllTab() {
       this.tabList = [];
       this.$router.push('/home');
     },

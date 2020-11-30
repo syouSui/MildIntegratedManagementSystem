@@ -60,16 +60,6 @@ let navList = [
         title: '供应商信息管理系统',
         icon: 'mdi-google-my-business',
       },
-      // {
-      //   title: 'prism 安装',
-      //   path: '/Home/plugin/prism',
-      //   icon: 'mdi-triangle-outline',
-      // },
-      // {
-      //   title: '材质图标',
-      //   path: '/Home/plugin/icons',
-      //   icon: 'mdi-material-design',
-      // },
     ],
   },
   {
