@@ -204,7 +204,6 @@
           >
             {{ item.title }}
             <v-icon
-              v-if="item.title != '首页'"
               size="20"
               @click.stop.prevent="closeCurrentTab(i)"
               @contextmenu.stop.prevent=""
