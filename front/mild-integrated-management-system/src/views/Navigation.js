@@ -23,7 +23,7 @@ let navList = [
       {
         title: '人事信息管理系统',
         path: '/Home/system/PersonnelManage',
-        icon: 'mdi-account',
+        icon: 'mdi-clipboard-account',
       },
       {
         title: '手机信息管理系统',

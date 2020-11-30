@@ -169,7 +169,7 @@
                   color:
                     list.title === '用户管理' && isDisabledUserItem
                       ? 'grey'
-                      : 'white',
+                      : '',
                 }"
                 v-text="list.icon"
               ></v-icon
