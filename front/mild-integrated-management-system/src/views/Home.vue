@@ -384,11 +384,16 @@ export default {
           path: '/Home/Welcome',
           title: '欢迎使用',
         });
-        this.$router.push({
-          name: 'Welcome',
-          path: '/Home/Welcome',
-        });
-      } else this.$router.push(this.tabList[this.tabList.length - 1].path);
+        this.$router
+          .push({
+            name: 'Welcome',
+            path: '/Home/Welcome',
+          })
+          .catch(() => {});
+      } else
+        this.$router
+          .push(this.tabList[this.tabList.length - 1].path)
+          .catch(() => {});
     },
     closeOtherTab(index) {
       let list = this.tabList[index];
