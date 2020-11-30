@@ -7,7 +7,7 @@ let user = {
   name: 'user',
   getRole() {
     let role = store.getters['user/getState'];
-    // -1 means user role not in vuex.
+    // -1 means user role was not stored in vuex.
     // So we should send request to back system to get it.
     if (role === -1) {
       // todo: This is temporary values for development.
