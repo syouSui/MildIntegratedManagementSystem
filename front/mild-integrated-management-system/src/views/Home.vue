@@ -119,9 +119,8 @@
       :dark="isShowDrawerBackground"
       hide-overlay
       clipped
-      class="pt-2"
     >
-      <v-list flat>
+      <v-list flat class="pt-0">
         <template v-for="list in navList">
           <!--    if the element is group, then show group      -->
           <v-list-group
