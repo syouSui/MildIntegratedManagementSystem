@@ -1,13 +1,12 @@
 <template>
-  <div>
-    <p>
-      header
-    </p>
-  </div>
+  <v-container>
+    <p>icons.vue</p>
+  </v-container>
 </template>
+
 <script>
 export default {
-  name: 'Header',
+  name: 'IconsVue',
 };
 </script>
 

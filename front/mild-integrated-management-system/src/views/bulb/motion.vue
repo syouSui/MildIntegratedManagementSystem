@@ -1,14 +1,12 @@
 <template>
-  <div>
-    <p>
-      footer
-    </p>
-  </div>
+  <v-container>
+    motion.vue
+  </v-container>
 </template>
 
 <script>
 export default {
-  name: 'Footer',
+  name: 'MotionVue',
 };
 </script>
 

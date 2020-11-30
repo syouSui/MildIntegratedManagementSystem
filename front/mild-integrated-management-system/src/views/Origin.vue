@@ -41,7 +41,7 @@
 </template>
 
 <script>
-import Login from '@/views/Login';
+// import Login from '@/views/Login';
 
 export default {
   name: 'Origin',
@@ -49,7 +49,7 @@ export default {
   components: {
     // LoginAndRegister,
     // HelloWorld,
-    Login,
+    // Login,
   },
 
   data: () => ({

@@ -1,25 +1,395 @@
 <template>
-  <div>
-    <Header></Header>
-    <div class="home">
-      <HelloWorld msg="Welcome to Your Vue.js App" />
-    </div>
-    <Footer></Footer>
-  </div>
+  <v-app>
+    <!--  app bar begin  -->
+    <v-app-bar
+      app
+      :elevation="appBarShadow"
+      clipped-left
+      color="primary"
+      dark
+      height="64"
+    >
+      <v-toolbar-title>
+        <v-avatar
+          size="40px"
+          color="blue lighten-3"
+          class="mx-3"
+          style="transform: rotate(180deg)"
+        >
+          <v-icon dark>
+            Mild
+          </v-icon>
+        </v-avatar>
+        <span>
+          轻度综合管理系统
+        </span>
+      </v-toolbar-title>
+      <v-spacer></v-spacer>
+      <v-toolbar-items>
+        <v-btn class="d-md-flex d-none" text @click="fullscreen">
+          <v-icon v-text="fullscreenIcon"></v-icon>
+        </v-btn>
+        <v-btn text @click="showSetting = !showSetting">
+          <v-icon>mdi-palette</v-icon>
+        </v-btn>
+        <v-btn text @click="logout">
+          <v-icon>mdi-logout</v-icon>
+        </v-btn>
+      </v-toolbar-items>
+    </v-app-bar>
+    <!--  app bar end  -->
+
+    <!--  color setting drawer begin  -->
+    <v-navigation-drawer
+      v-model="showSetting"
+      width="300"
+      overlay-opacity="0"
+      floating
+      temporary
+      right
+      app
+    >
+      <v-sheet class="ma-4" color="transparent">
+        <v-flex class="mb-3 subtitle-1">主题颜色</v-flex>
+        <v-color-picker
+          v-model="primarySet"
+          width="268"
+          canvas-height="100"
+          class="mb-3"
+          hide-inputs
+          flat
+          dark
+        ></v-color-picker>
+        <v-flex class="mb-3 subtitle-1">关键颜色</v-flex>
+        <v-color-picker
+          v-model="secondarySet"
+          width="268"
+          canvas-height="100"
+          class="mb-3"
+          hide-inputs
+          flat
+          dark
+        ></v-color-picker>
+        <v-slider
+          v-model="appBarShadow"
+          color="primary"
+          label="应用栏阴影"
+          max="8"
+          thumb-label
+          hide-details
+        ></v-slider>
+        <v-switch
+          v-model="showTabsView"
+          label="菜单选项卡"
+          thumb-label
+          hide-details
+        ></v-switch>
+        <v-switch
+          v-model="showMiniNav"
+          label="迷你菜单栏"
+          thumb-label
+          hide-details
+        ></v-switch>
+        <v-switch
+          v-model="backgroundNav"
+          label="菜单栏背景色"
+          hide-details
+        ></v-switch>
+        <v-switch
+          v-model="$vuetify.theme.dark"
+          label="夜间模式"
+          hide-details
+        ></v-switch>
+      </v-sheet>
+    </v-navigation-drawer>
+    <!--  color setting drawer end  -->
+
+    <!--  left drawer begin  -->
+    <v-navigation-drawer
+      app
+      width="250"
+      :mini-variant="showMiniNav"
+      mini-variant-width="64"
+      src="../assets/background.png"
+      :color="backgroundNav ? 'primary' : null"
+      :dark="backgroundNav"
+      hide-overlay
+      clipped
+      class="pt-2"
+    >
+      <v-list flat>
+        <template v-for="list in navList">
+          <!--    if the element is group, then show group      -->
+          <v-list-group
+            v-if="list.items.length"
+            :key="list.path"
+            class="white--text"
+            :prepend-icon="list.icon"
+            :active-class="
+              backgroundNav || $vuetify.theme.dark
+                ? 'white--text'
+                : 'grey--text text--darken-3'
+            "
+            :group="list.group"
+          >
+            <template v-slot:activator>
+              <v-list-item-content>
+                <v-list-item-title v-text="list.title"></v-list-item-title>
+              </v-list-item-content>
+            </template>
+            <v-list-item
+              v-for="item in list.items"
+              :key="item.title"
+              active-class="secondary white--text"
+              :to="item.path"
+            >
+              <v-list-item-action
+                ><v-icon small class="ml-4" v-text="item.icon"></v-icon
+              ></v-list-item-action>
+              <v-list-item-content>
+                <v-list-item-title v-text="item.title"></v-list-item-title>
+              </v-list-item-content>
+            </v-list-item>
+          </v-list-group>
+          <!--     else show the single item       -->
+          <v-list-item
+            v-else
+            :key="list.title"
+            active-class="secondary white--text"
+            :to="list.path"
+          >
+            <v-list-item-action
+              ><v-icon v-text="list.icon"></v-icon
+            ></v-list-item-action>
+            <v-list-item-content>
+              <v-list-item-title v-text="list.title"></v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+        </template>
+      </v-list>
+    </v-navigation-drawer>
+    <!--  left drawer end  -->
+
+    <!--  components view page  -->
+    <v-main app class="divider pb-12" :style="background">
+      <v-expand-transition>
+        <v-tabs
+          v-show="showTabsView && tabList.length"
+          color="secondary"
+          style="position: sticky; top: 64px;z-index: 5"
+          show-arrows
+        >
+          <v-tab
+            v-for="(item, i) in tabList"
+            :key="item.name"
+            :name="i"
+            :to="item.path"
+            @contextmenu="showMenu"
+          >
+            {{ item.title }}
+            <v-icon
+              v-if="item.title != '首页'"
+              size="20"
+              @click.stop.prevent="closeTab(i)"
+              @contextmenu.stop.prevent=""
+              >mdi-close</v-icon
+            >
+          </v-tab>
+        </v-tabs>
+      </v-expand-transition>
+      <v-menu
+        v-model="tabMenu"
+        :position-x="x"
+        :position-y="y"
+        absolute
+        offset-y
+        min-width="110"
+      >
+        <v-list dense>
+          <v-list-item
+            v-ripple="{ class: 'secondary--text' }"
+            @click="closeTab(index)"
+          >
+            <v-list-item-title>关闭</v-list-item-title>
+          </v-list-item>
+          <v-list-item
+            v-ripple="{ class: 'secondary--text' }"
+            @click="closeOther(index)"
+          >
+            <v-list-item-title>关闭其他</v-list-item-title>
+          </v-list-item>
+          <v-list-item
+            v-ripple="{ class: 'secondary--text' }"
+            @click="closeAll"
+          >
+            <v-list-item-title>关闭所有</v-list-item-title>
+          </v-list-item>
+        </v-list>
+      </v-menu>
+
+      <keep-alive>
+        <router-view></router-view>
+      </keep-alive>
+    </v-main>
+    <!--  components view page  -->
+  </v-app>
 </template>
 
 <script>
 // @ is an alias to /src
-import HelloWorld from '@/components/HelloWorld.vue';
-import Header from '@/views/Header';
-import Footer from '@/views/Footer';
+import screenfull from 'screenfull';
+import navList from '@/views/Navigation';
 
 export default {
   name: 'Home',
   components: {
-    Footer,
-    Header,
-    HelloWorld,
+    //
+  },
+
+  data() {
+    return {
+      // this navList, from Navigation.js.
+      navList: navList,
+      tabList: [],
+      showSetting: false,
+      showMiniNav: false,
+      showTabsView: true,
+      backgroundNav: true,
+      appBarShadow: 4,
+      background: {
+        backgroundImage: `url(${require('../assets/background.png')})`,
+        backgroundAttachment: 'fixed',
+      },
+      fullscreenIcon: 'mdi-fullscreen',
+      tabMenu: false,
+      x: 0,
+      y: 0,
+    };
+  },
+
+  computed: {
+    primarySet: {
+      get: function() {
+        return this.$vuetify.theme.dark
+          ? this.$vuetify.theme.themes.dark.primary
+          : this.$vuetify.theme.themes.light.primary;
+      },
+      set: function(newValue) {
+        if (this.$vuetify.theme.dark) {
+          this.$vuetify.theme.themes.dark.primary = newValue;
+        } else {
+          this.$vuetify.theme.themes.light.primary = newValue;
+        }
+      },
+    },
+    secondarySet: {
+      get: function() {
+        return this.$vuetify.theme.dark
+          ? this.$vuetify.theme.themes.dark.secondary
+          : this.$vuetify.theme.themes.light.secondary;
+      },
+      set: function(newValue) {
+        if (this.$vuetify.theme.dark) {
+          this.$vuetify.theme.themes.dark.secondary = newValue;
+        } else {
+          this.$vuetify.theme.themes.light.secondary = newValue;
+        }
+      },
+    },
+  },
+
+  watch: {
+    $route(to) {
+      // 查找tabs里面是否已经包含该路由
+      let isCover = this.tabList.some(val => {
+        return val.name === to.name;
+      });
+      !isCover &&
+        this.tabList.push({
+          name: to.name,
+          path: to.path,
+          title: to.meta,
+        });
+    },
+    tabsView(val) {
+      localStorage.setItem('tabsView', val);
+    },
+    miniNav(val) {
+      localStorage.setItem('miniNav', val);
+    },
+    backgroundNav(val) {
+      localStorage.setItem('backgroundNav', val);
+    },
+    appBarShadow(val) {
+      localStorage.setItem('appBarShadow', val);
+    },
+    dark(val) {
+      localStorage.setItem('dark', val);
+    },
+    lightPrimary(val) {
+      localStorage.setItem('lightPrimary', val);
+    },
+    darkPrimary(val) {
+      localStorage.setItem('darkPrimary', val);
+    },
+    lightSecondary(val) {
+      localStorage.setItem('lightSecondary', val);
+    },
+    darkSecondary(val) {
+      localStorage.setItem('darkSecondary', val);
+    },
+  },
+
+  mounted() {
+    // console.log(navList);
+    this.tabList.push({
+      name: this.$route.name,
+      path: this.$route.path,
+      title: this.$route.meta,
+    });
+    this.showTabsView = JSON.parse(localStorage.getItem('tabsView') || true);
+    this.showMiniNav = JSON.parse(localStorage.getItem('miniNav') || false);
+    this.backgroundNav = JSON.parse(
+      localStorage.getItem('backgroundNav') || true
+    );
+    this.appbarShadow = localStorage.getItem('appBarShadow') || 4;
+  },
+
+  methods: {
+    fullscreen() {
+      this.fullscreenIcon = screenfull.isFullscreen
+        ? 'mdi-fullscreen'
+        : 'mdi-fullscreen-exit';
+      screenfull.toggle();
+    },
+    logout() {
+      localStorage.removeItem('token');
+      this.$router.replace('/Login');
+    },
+    showMenu(e) {
+      e.preventDefault();
+      this.index = e.target.name;
+      this.tabMenu = false;
+      this.x = e.clientX;
+      this.y = e.clientY;
+      this.$nextTick(() => {
+        this.tabMenu = true;
+      });
+    },
+    closeTab(index) {
+      this.tabList.splice(index, 1);
+      this.$router.push(this.tabList[this.tabList.length - 1].path);
+    },
+    closeOther(index) {
+      let list = this.tabList[index];
+      this.tabList = [];
+      this.tabList.push(list);
+      this.$router.push(list.path);
+    },
+    closeAll() {
+      this.tabList = [];
+      this.$router.push('/home');
+    },
   },
 };
 </script>
