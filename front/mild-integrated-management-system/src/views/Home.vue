@@ -433,7 +433,7 @@ export default {
         });
         this.$router
           .push({
-            name: 'Welcome',
+            home_id: 'Welcome',
             path: '/Home/Welcome',
           })
           .catch(() => {});
@@ -457,7 +457,7 @@ export default {
       });
       this.$router
         .push({
-          name: 'Welcome',
+          home_id: 'Welcome',
           path: '/Home/Welcome',
         })
         .catch(() => {});
