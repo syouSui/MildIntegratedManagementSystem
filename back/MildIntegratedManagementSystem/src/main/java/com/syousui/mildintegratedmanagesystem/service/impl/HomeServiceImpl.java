@@ -37,9 +37,9 @@ public class HomeServiceImpl implements HomeService {
             List<Integer> homeTypeIdList ) {
         PageHelper.startPage( pageNum, pageSize );
         List<Home> homeList = homeMapper.selectSelective(
-                homeId == 0 ? null : homeId,
+                homeId==null || homeId == 0 ? null : homeId,
                 "".equals( title ) ? null : title,
-                priceFrom == 0.0 ? null : priceFrom, priceTo == 0.0 ? null : priceTo,
+                priceFrom==null || priceFrom == 0.0 ? null : priceFrom,priceTo==null || priceTo == 0.0 ? null : priceTo,
                 dateFrom, dateTo,
                 homeTypeIdList
         );
