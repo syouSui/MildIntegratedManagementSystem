@@ -243,7 +243,7 @@
       </v-menu>
 
       <keep-alive>
-        <router-view></router-view>
+        <router-view app></router-view>
       </keep-alive>
     </v-main>
     <!--  components view page  -->
