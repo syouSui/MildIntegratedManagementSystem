@@ -1,7 +1,9 @@
-// import vue from '@/main.js';
+import axiosForVuePlugin from '@/plugins/axios';
+let axios = axiosForVuePlugin.axios;
 
 let home = {
   name: 'home',
+  getAll: () => axios.post('/Home/', {}),
   // getMd(category, grade, fileName) {
   //   console.log(`${category}\t${grade}\t${fileName}`);
   //   // return vue.$http.post('/index/test.md', null);
