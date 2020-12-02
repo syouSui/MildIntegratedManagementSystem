@@ -8,10 +8,17 @@ import axios from 'axios';
 // axios.defaults.headers.common['Authorization'] = AUTH_TOKEN;
 // axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
 
+// let baseUrl_dev = 'http://localhost:8888/api';
+// let baseUrl_dev = 'http://localhost:8888';
+// let baseUrl_pro = '';
+
 let config = {
-  // baseURL: process.env.baseURL || process.env.apiUrl || ""
-  // timeout: 60 * 1000, // Timeout
-  // withCredentials: true, // Check cross-site Access-Control
+  baseURL: '/api',
+  timeout: 60 * 1000, // Timeout
+  withCredentials: true, // Check cross-site Access-Control
+  headers: {
+    'Content-Type': 'application/json',
+  },
 };
 
 const _axios = axios.create(config);
