@@ -23,9 +23,45 @@ let config = {
 
 const _axios = axios.create(config);
 
+let map = {
+  0: '暂未设置',
+  1: '一室一厅一卫',
+  2: '两室一厅一卫',
+  3: '三室一厅一卫',
+  4: '四室一厅一卫',
+  5: '五室一厅二卫',
+  6: '六室一厅二卫',
+  7: '双层别墅',
+  8: '三层别墅',
+  9: '四层别墅',
+  10: '五层别墅',
+  11: '六层别墅',
+  12: '高层水景公寓',
+  13: '豪华海景别墅',
+  14: '山景别墅',
+  15: '普通公寓',
+  16: '四合院',
+};
+
 _axios.interceptors.request.use(
   function(config) {
     // Do something before request is sent
+    // console.log(config);
+    if (config.data.length) {
+      let data = config.data;
+      if (data['homeTypeId'] !== '') {
+        data['homeTypeId'] = Object.keys(map).find(
+          i => map[i] === data['homeTypeId']
+        );
+      } else if (data['homeTypeIdList'] !== '') {
+        let arr = data['homeTypeIdList'];
+        for (let i = 0; i < arr.length; ++i) {
+          arr[i] = Object.keys(map).find(idx => map[idx] === arr[i]);
+        }
+        data['homeTypeIdList'] = arr;
+      }
+      config.data = data;
+    }
     return config;
   },
   function(error) {
@@ -38,6 +74,10 @@ _axios.interceptors.request.use(
 _axios.interceptors.response.use(
   function(response) {
     // Do something with response data
+    // console.log(response);
+    for (let i = 0; i < response.data.data.length; ++i) {
+      response.data.data[i].homeTypeId = map[response.data.data[i].homeTypeId];
+    }
     return response;
   },
   function(error) {
