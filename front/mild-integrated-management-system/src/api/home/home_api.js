@@ -3,7 +3,7 @@ let axios = axiosForVuePlugin.axios;
 
 let home = {
   name: 'home',
-  getAll: () => axios.post('/Home/', {}),
+  getAll: pageNum => axios.post('/Home/', { pageNum: pageNum }),
   // getMd(category, grade, fileName) {
   //   console.log(`${category}\t${grade}\t${fileName}`);
   //   // return vue.$http.post('/index/test.md', null);

@@ -18,9 +18,9 @@
               <v-toolbar-title>{{ name }}</v-toolbar-title>
               <v-divider class="mx-4" inset vertical></v-divider>
               <v-spacer></v-spacer>
-              <!--              Dialog for Edit and New-->
+              <!--              Dialog for Insert and Update-->
               <v-dialog
-                v-model="dialogForNewAndEdit"
+                v-model="dialogForInsertAndUpdate"
                 max-width="800px"
                 max-height="500"
               >
@@ -36,18 +36,18 @@
                   </v-btn>
                 </template>
                 <v-card>
-                  <v-card-title>
+                  <v-card-title class="pt-12 pl-12">
                     <span class="headline">{{ formTitle }}</span>
                   </v-card-title>
-                  <v-card-text>
+                  <v-card-text class="px-12 py-0">
                     <v-container>
                       <v-row>
                         <v-col cols="12" sm="6" md="6" lg="6">
                           <v-text-field
-                            v-model="editedItem.home_id"
+                            v-model="editedItem.homeId"
                             label="Home id"
-                            readonly
-                            disabled
+                            :readonly="editedIndex !== -1"
+                            :disabled="editedIndex !== -1"
                           ></v-text-field>
                         </v-col>
                         <v-col cols="12" sm="6" md="6" lg="6">
@@ -64,7 +64,7 @@
                         </v-col>
                         <v-col cols="12" sm="6" md="6" lg="6">
                           <v-text-field
-                            v-model="editedItem.updated_time"
+                            v-model="editedItem.updatedTime"
                             label="Updated Time"
                             readonly
                             disabled
@@ -72,7 +72,7 @@
                         </v-col>
                         <v-col cols="12" sm="6" md="6" lg="6">
                           <v-select
-                            v-model="editedItem.home_type_id"
+                            v-model="editedItem.homeTypeId"
                             :items="selectItems"
                             label="Home Type"
                           ></v-select>
@@ -80,10 +80,9 @@
                       </v-row>
                     </v-container>
                   </v-card-text>
-
-                  <v-card-actions>
+                  <v-card-actions class="pb-8 pr-8">
                     <v-spacer></v-spacer>
-                    <v-btn color="blue darken-1" text @click="close">
+                    <v-btn color="blue darken-1" text @click="closeNewAndEdit">
                       Cancel
                     </v-btn>
                     <v-btn color="blue darken-1" text @click="save">
@@ -127,6 +126,9 @@
             </v-btn>
           </template>
         </v-data-table>
+        <v-col xs="12" sm="8" md="6" lg="6" xl="6" cols="6" justify="center">
+          <v-pagination v-model="pageNum" :length="pageTotal"></v-pagination>
+        </v-col>
       </v-col>
     </v-row>
   </v-container>
@@ -138,31 +140,31 @@ export default {
 
   data: () => ({
     name: '房屋信息一览表',
-    dialogForNewAndEdit: false,
+    dialogForInsertAndUpdate: false,
     dialogForDelete: false,
     headers: [
-      { text: 'ID', align: 'start', value: 'home_id' },
-      { text: '标题', value: 'title' },
+      { text: 'ID', align: 'start', value: 'homeId' },
+      { text: '标题', align: 'center', value: 'title' },
       { text: '价格', value: 'price' },
-      { text: '更新时间', value: 'updated_time' },
-      { text: '房屋类型', value: 'home_type_id' },
+      { text: '更新时间', value: 'updatedTime' },
+      { text: '房屋类型', value: 'homeTypeId' },
       { text: '编辑项', value: 'actions', sortable: false },
     ],
     tableData: [],
     editedIndex: -1,
     editedItem: {
-      home_id: '',
+      homeId: '',
       title: 0,
       price: 0,
-      updated_time: 0,
-      home_type_id: 0,
+      updatedTime: 'NOW',
+      homeTypeId: 0,
     },
     defaultItem: {
-      home_id: '',
+      homeId: '',
       title: 0,
       price: 0,
-      updated_time: 0,
-      home_type_id: 0,
+      updatedTime: 0,
+      homeTypeId: 0,
     },
     selectItems: [
       '一室一厅一卫',
@@ -182,6 +184,8 @@ export default {
       '普通公寓',
       '四合院',
     ],
+    pageNum: 0,
+    pageTotal: 0,
   }),
 
   computed: {
@@ -191,100 +195,41 @@ export default {
   },
 
   watch: {
-    dialogForNewAndEdit(val) {
-      val || this.close();
+    dialogForInsertAndUpdate(val) {
+      val || this.closeNewAndEdit();
     },
     dialogForDelete(val) {
       val || this.closeDelete();
+    },
+    pageNum(val) {
+      console.log(val);
+      this.$api.home
+        .getAll(val)
+        .then(resp => {
+          this.tableData = resp.data.data.content;
+          this.pageTotal = resp.data.data.pageTotal;
+          console.log(resp);
+        })
+        .catch(err => {
+          console.error(err);
+        });
     },
   },
 
   created() {
     this.initialize();
     console.log(this.$vuetify.breakpoint.name);
-    console.log(this.tableData);
   },
 
   methods: {
     initialize() {
-      this.tableData = [
-        {
-          home_id: 'Frozen Yogurt',
-          title: 159,
-          price: 6.0,
-          updated_time: 24,
-          home_type_id: '一室一厅一卫',
-        },
-        {
-          home_id: 'Ice cream sandwich',
-          title: 237,
-          price: 9.0,
-          updated_time: 37,
-          home_type_id: 4.3,
-        },
-        {
-          home_id: 'Eclair',
-          title: 262,
-          price: 16.0,
-          updated_time: 23,
-          home_type_id: 6.0,
-        },
-        {
-          home_id: 'Cupcake',
-          title: 305,
-          price: 3.7,
-          updated_time: 67,
-          home_type_id: 4.3,
-        },
-        {
-          home_id: 'Gingerbread',
-          title: 356,
-          price: 16.0,
-          updated_time: 49,
-          home_type_id: 3.9,
-        },
-        {
-          home_id: 'Jelly bean',
-          title: 375,
-          price: 0.0,
-          updated_time: 94,
-          home_type_id: 0.0,
-        },
-        {
-          home_id: 'Lollipop',
-          title: 392,
-          price: 0.2,
-          updated_time: 98,
-          home_type_id: 0,
-        },
-        {
-          home_id: 'Honeycomb',
-          title: 408,
-          price: 3.2,
-          updated_time: 87,
-          home_type_id: 6.5,
-        },
-        {
-          home_id: 'Donut',
-          title: 452,
-          price: 25.0,
-          updated_time: 51,
-          home_type_id: 4.9,
-        },
-        {
-          home_id: 'KitKat',
-          title: 518,
-          price: 26.0,
-          updated_time: 65,
-          home_type_id: 7,
-        },
-      ];
+      this.pageNum = 1;
     },
 
     editItem(item) {
       this.editedIndex = this.tableData.indexOf(item);
       this.editedItem = Object.assign({}, item);
-      this.dialogForNewAndEdit = true;
+      this.dialogForInsertAndUpdate = true;
     },
 
     deleteItem(item) {
@@ -298,8 +243,8 @@ export default {
       this.closeDelete();
     },
 
-    close() {
-      this.dialogForNewAndEdit = false;
+    closeNewAndEdit() {
+      this.dialogForInsertAndUpdate = false;
       this.$nextTick(() => {
         this.editedItem = Object.assign({}, this.defaultItem);
         this.editedIndex = -1;
@@ -320,7 +265,7 @@ export default {
       } else {
         this.tableData.push(this.editedItem);
       }
-      this.close();
+      this.closeNewAndEdit();
     },
   },
 };
