@@ -3,17 +3,27 @@ let axios = axiosForVuePlugin.axios;
 
 let home = {
   name: 'home',
-  getAll: pageNum => axios.post('/Home/', { pageNum: pageNum }),
-  // getMd(category, grade, fileName) {
-  //   console.log(`${category}\t${grade}\t${fileName}`);
-  //   // return vue.$http.post('/index/test.md', null);
-  //   return vue.$index.user.post('/index/test.json', null);
-  //   // return vue.$http.post('/index/FindGoodsServlet', {
-  //   //   method: 'findAllGoods',
-  //   //   currentPage: '1',
-  //   //   pageSize: '100',
-  //   // });
-  // },
+  select: obj => axios.post('/Home/', obj),
+  update: obj =>
+    axios.post('/Home/update', {
+      homeId: obj.homeId,
+      title: obj.title,
+      price: obj.price,
+      updatedTime: obj.updatedTime,
+      homeTypeId: obj.homeTypeId,
+    }),
+  insert: obj =>
+    axios.post('/Home/insert', {
+      homeId: obj.homeId,
+      title: obj.title,
+      price: obj.price,
+      updatedTime: obj.updatedTime,
+      homeTypeId: obj.homeTypeId,
+    }),
+  delete: homeId =>
+    axios.post('/Home/delete', {
+      homeId: homeId,
+    }),
 };
 
 export default home;

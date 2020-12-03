@@ -46,8 +46,8 @@
                           <v-text-field
                             v-model="editedItem.homeId"
                             label="Home id"
-                            :readonly="editedIndex !== -1"
-                            :disabled="editedIndex !== -1"
+                            readonly
+                            disabled
                           ></v-text-field>
                         </v-col>
                         <v-col cols="12" sm="6" md="6" lg="6">
@@ -82,7 +82,11 @@
                   </v-card-text>
                   <v-card-actions class="pb-8 pr-8">
                     <v-spacer></v-spacer>
-                    <v-btn color="blue darken-1" text @click="closeNewAndEdit">
+                    <v-btn
+                      color="blue darken-1"
+                      text
+                      @click="closeInsertAndUpdate"
+                    >
                       Cancel
                     </v-btn>
                     <v-btn color="blue darken-1" text @click="save">
@@ -153,17 +157,17 @@ export default {
     tableData: [],
     editedIndex: -1,
     editedItem: {
-      homeId: '',
+      homeId: 'DEFAULT',
       title: 0,
       price: 0,
       updatedTime: 'NOW',
       homeTypeId: 0,
     },
     defaultItem: {
-      homeId: '',
+      homeId: 'DEFAULT',
       title: 0,
       price: 0,
-      updatedTime: 0,
+      updatedTime: 'NOW',
       homeTypeId: 0,
     },
     selectItems: [
@@ -196,19 +200,19 @@ export default {
 
   watch: {
     dialogForInsertAndUpdate(val) {
-      val || this.closeNewAndEdit();
+      val || this.closeInsertAndUpdate();
     },
     dialogForDelete(val) {
       val || this.closeDelete();
     },
     pageNum(val) {
-      console.log(val);
+      // console.log(val);
       this.$api.home
-        .getAll(val)
+        .select({ pageNum: val })
         .then(resp => {
           this.tableData = resp.data.data.content;
           this.pageTotal = resp.data.data.pageTotal;
-          console.log(resp);
+          // console.log(resp);
         })
         .catch(err => {
           console.error(err);
@@ -232,23 +236,76 @@ export default {
       this.dialogForInsertAndUpdate = true;
     },
 
-    deleteItem(item) {
-      this.editedIndex = this.tableData.indexOf(item);
-      this.editedItem = Object.assign({}, item);
-      this.dialogForDelete = true;
-    },
-
-    deleteItemConfirm() {
-      this.tableData.splice(this.editedIndex, 1);
-      this.closeDelete();
-    },
-
-    closeNewAndEdit() {
+    closeInsertAndUpdate() {
       this.dialogForInsertAndUpdate = false;
       this.$nextTick(() => {
         this.editedItem = Object.assign({}, this.defaultItem);
         this.editedIndex = -1;
       });
+    },
+
+    save() {
+      let obj = this.editedItem;
+      if (this.editedIndex > -1) {
+        // Update Item
+        let indexOfThisObjectInTableData = this.editedIndex;
+        this.$api.home
+          .update(obj)
+          .then(resp => {
+            if (resp.data.data === 1) {
+              console.log('Modify successfully');
+              this.$api.home
+                .select({ pageNum: '1', homeId: obj.homeId })
+                .then(resp => {
+                  Object.assign(
+                    this.tableData[indexOfThisObjectInTableData],
+                    resp.data.data.content[0]
+                  );
+                });
+            } else {
+              // console.log(resp);
+              console.log("Server happened error! Don't update data!");
+            }
+          })
+          .catch(err => {
+            console.log('Local js happened error!');
+            console.log(err);
+          });
+      } else {
+        // Insert Item
+        this.$api.home
+          .insert(obj)
+          .then(resp => {
+            if (resp.data.data === 1) {
+              console.log('insert successfully');
+              this.$api.home
+                .select({ pageNum: this.pageNum })
+                .then(resp => {
+                  this.tableData = resp.data.data.content;
+                  this.pageTotal = resp.data.data.pageTotal;
+                })
+                .catch(err => {
+                  console.log(err);
+                  //
+                });
+            } else {
+              // console.log(resp);
+              console.log("Server happened error! Don't insert data!");
+            }
+          })
+          .catch(err => {
+            console.log('Local js happened error!');
+            console.log(err);
+          });
+        // this.tableData.push(this.editedItem);
+      }
+      this.closeInsertAndUpdate();
+    },
+
+    deleteItem(item) {
+      this.editedIndex = this.tableData.indexOf(item);
+      this.editedItem = Object.assign({}, item);
+      this.dialogForDelete = true;
     },
 
     closeDelete() {
@@ -259,13 +316,33 @@ export default {
       });
     },
 
-    save() {
-      if (this.editedIndex > -1) {
-        Object.assign(this.tableData[this.editedIndex], this.editedItem);
-      } else {
-        this.tableData.push(this.editedItem);
-      }
-      this.closeNewAndEdit();
+    deleteItemConfirm() {
+      console.log(this.tableData[this.editedIndex].homeId);
+      this.$api.home
+        .delete(this.tableData[this.editedIndex].homeId)
+        .then(resp => {
+          if (resp.data.data === 1) {
+            console.log('delete successfully');
+            this.$api.home
+              .select({ pageNum: this.pageNum })
+              .then(resp => {
+                this.tableData = resp.data.data.content;
+                this.pageTotal = resp.data.data.pageTotal;
+                // console.log(resp);
+              })
+              .catch(err => {
+                console.error(err);
+              });
+          } else {
+            console.log("Server happened error! Don't delete data!");
+          }
+        })
+        .catch(err => {
+          console.log('Local js happened error!');
+          console.log(err);
+        });
+      // this.tableData.splice(this.editedIndex, 1);
+      this.closeDelete();
     },
   },
 };

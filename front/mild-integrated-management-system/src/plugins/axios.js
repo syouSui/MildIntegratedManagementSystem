@@ -47,8 +47,17 @@ _axios.interceptors.request.use(
   function(config) {
     // Do something before request is sent
     // console.log(config);
-    if (config.data.length) {
-      let data = config.data;
+    let data = config.data;
+    if (
+      config.url === '/Home/insert' ||
+      config.url === '/Home/delete' ||
+      config.url === '/Home/update'
+    ) {
+      if (config.url === '/Home/delete') console.log(config);
+      data.homeTypeId = Object.keys(map).find(
+        idx => map[idx] === data.homeTypeId
+      );
+    } else if (config.url === '/Home/') {
       if (data['homeTypeId'] !== '') {
         data['homeTypeId'] = Object.keys(map).find(
           i => map[i] === data['homeTypeId']
@@ -60,8 +69,9 @@ _axios.interceptors.request.use(
         }
         data['homeTypeIdList'] = arr;
       }
-      config.data = data;
     }
+    config.data = data;
+    // console.log(config);
     return config;
   },
   function(error) {
@@ -75,9 +85,13 @@ _axios.interceptors.response.use(
   function(response) {
     // Do something with response data
     // console.log(response);
-    for (let i = 0; i < response.data.data.length; ++i) {
-      response.data.data[i].homeTypeId = map[response.data.data[i].homeTypeId];
+    if (response.config.url === '/Home/') {
+      for (let i = 0; i < response.data.data.content.length; ++i) {
+        response.data.data.content[i].homeTypeId =
+          map[response.data.data.content[i].homeTypeId];
+      }
     }
+    // console.log(response.data.data.content);
     return response;
   },
   function(error) {
