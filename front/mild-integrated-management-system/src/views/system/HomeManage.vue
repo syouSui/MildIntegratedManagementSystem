@@ -130,6 +130,14 @@
             </v-btn>
           </template>
         </v-data-table>
+        <v-snackbar v-model="snack" :timeout="3000" :color="snackColor">
+          {{ snackText }}
+          <template v-slot:action="{ attrs }">
+            <v-btn v-bind="attrs" text @click="snack = false">
+              Close
+            </v-btn>
+          </template>
+        </v-snackbar>
         <v-col xs="12" sm="8" md="6" lg="6" xl="6" cols="6" justify="center">
           <v-pagination v-model="pageNum" :length="pageTotal"></v-pagination>
         </v-col>
@@ -190,6 +198,9 @@ export default {
     ],
     pageNum: 0,
     pageTotal: 0,
+    snack: '',
+    snackColor: '',
+    snackText: '',
   }),
 
   computed: {
@@ -200,9 +211,23 @@ export default {
 
   watch: {
     dialogForInsertAndUpdate(val) {
+      if (val) {
+        this.snack = true;
+        this.snackColor = 'info';
+        this.snackText = `${
+          this.editedIndex === -1 ? 'New item dialog' : 'Edit item dialog'
+        } opened!`;
+      }
       val || this.closeInsertAndUpdate();
     },
     dialogForDelete(val) {
+      if (val) {
+        this.snack = true;
+        this.snackColor = 'info';
+        this.snackText = `${
+          this.editedIndex === -1 ? 'New item dialog' : 'Edit item dialog'
+        } closed!`;
+      }
       val || this.closeDelete();
     },
     pageNum(val) {
@@ -253,7 +278,10 @@ export default {
           .update(obj)
           .then(resp => {
             if (resp.data.data === 1) {
-              console.log('Modify successfully');
+              this.snack = true;
+              this.snackColor = 'success';
+              this.snackText = 'Update successfully!';
+              // console.log('Modify successfully!');
               this.$api.home
                 .select({ pageNum: '1', homeId: obj.homeId })
                 .then(resp => {
@@ -264,11 +292,15 @@ export default {
                 });
             } else {
               // console.log(resp);
-              console.log("Server happened error! Don't update data!");
+              this.snack = true;
+              this.snackColor = 'error';
+              this.snackText = "Server happened error! Don't update data!";
             }
           })
           .catch(err => {
-            console.log('Local js happened error!');
+            this.snack = true;
+            this.snackColor = 'error';
+            this.snackText = 'Local js happened error!';
             console.log(err);
           });
       } else {
@@ -277,12 +309,16 @@ export default {
           .insert(obj)
           .then(resp => {
             if (resp.data.data === 1) {
-              console.log('insert successfully');
+              // console.log('insert successfully');
+              this.snack = true;
+              this.snackColor = 'success';
+              this.snackText = 'Insert successfully!';
               this.$api.home
-                .select({ pageNum: this.pageNum })
+                .select({ pageNum: this.pageTotal })
                 .then(resp => {
                   this.tableData = resp.data.data.content;
                   this.pageTotal = resp.data.data.pageTotal;
+                  this.pageNum = this.pageTotal;
                 })
                 .catch(err => {
                   console.log(err);
@@ -290,11 +326,15 @@ export default {
                 });
             } else {
               // console.log(resp);
-              console.log("Server happened error! Don't insert data!");
+              this.snack = true;
+              this.snackColor = 'error';
+              this.snackText = "Server happened error! Don't insert data!";
             }
           })
           .catch(err => {
-            console.log('Local js happened error!');
+            this.snack = true;
+            this.snackColor = 'error';
+            this.snackText = 'Local js happened error!';
             console.log(err);
           });
         // this.tableData.push(this.editedItem);
@@ -322,7 +362,9 @@ export default {
         .delete(this.tableData[this.editedIndex].homeId)
         .then(resp => {
           if (resp.data.data === 1) {
-            console.log('delete successfully');
+            this.snack = true;
+            this.snackColor = 'success';
+            this.snackText = 'Delete successfully!';
             this.$api.home
               .select({ pageNum: this.pageNum })
               .then(resp => {
@@ -334,12 +376,16 @@ export default {
                 console.error(err);
               });
           } else {
-            console.log("Server happened error! Don't delete data!");
+            this.snack = true;
+            this.snackColor = 'error';
+            this.snackText = "Server happened error! Don't delete data!";
           }
         })
         .catch(err => {
-          console.log('Local js happened error!');
           console.log(err);
+          this.snack = true;
+          this.snackColor = 'error';
+          this.snackText = 'Local js happened error!';
         });
       // this.tableData.splice(this.editedIndex, 1);
       this.closeDelete();

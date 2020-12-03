@@ -14,7 +14,7 @@ export default new Vuetify({
         error: '#e91e63',
         warning: '#ffc107',
         info: '#84acbf',
-        success: '#8bc34a',
+        success: '#99aa8d',
       },
       dark: {
         primary: localStorage.getItem('darkPrimary') || '#304a76',
@@ -24,7 +24,7 @@ export default new Vuetify({
         error: '#e91e63',
         warning: '#ffc107',
         info: '#84acbf',
-        success: '#8bc34a',
+        success: '#99aa8d',
       },
     },
   },
