@@ -58,6 +58,8 @@ public class UserServiceImpl implements UserService {
         user.setAvatarUrl( "".equals( user.getAvatarUrl( ) ) || null == user.getAvatarUrl( ) ?
                 null : user.getAvatarUrl( )
         );
+        user.setPhone( "".equals( user.getPhone()) ? null : user.getPhone( ) );
+        user.setEmail( "".equals( user.getEmail()) ? null : user.getEmail( ) );
         return isForced ?
                 userMapper.insert( user ) :
                 userMapper.insertSelective( user );
