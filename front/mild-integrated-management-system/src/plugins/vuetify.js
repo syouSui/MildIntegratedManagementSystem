@@ -9,7 +9,7 @@ export default new Vuetify({
       light: {
         primary: localStorage.getItem('lightPrimary') || '#335c7b',
         secondary: localStorage.getItem('lightSecondary') || '#3d436a',
-        accent: '#ff5722',
+        accent: '#eca895',
         divider: '#fafafa',
         error: '#e91e63',
         warning: '#ffc107',
@@ -19,7 +19,7 @@ export default new Vuetify({
       dark: {
         primary: localStorage.getItem('darkPrimary') || '#304a76',
         secondary: localStorage.getItem('darkSecondary') || '#73657f',
-        accent: '#232f34',
+        accent: '#a76f5e',
         divider: '#121212',
         error: '#e91e63',
         warning: '#ffc107',

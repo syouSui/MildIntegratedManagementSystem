@@ -243,7 +243,9 @@
       </v-menu>
 
       <keep-alive>
-        <router-view app></router-view>
+        <transition name="fade">
+          <router-view app></router-view>
+        </transition>
       </keep-alive>
     </v-main>
     <!--  components view page  -->
@@ -282,7 +284,8 @@ export default {
       y: 0,
       isOpenLeftDrawer: !(
         this.$vuetify.breakpoint.name === 'xs' ||
-        this.$vuetify.breakpoint.name === 'sm'
+        this.$vuetify.breakpoint.name === 'sm' ||
+        this.$vuetify.breakpoint.name === 'md'
       ),
       isDisabledUserItem: !this.$api.user.getRole(),
     };
