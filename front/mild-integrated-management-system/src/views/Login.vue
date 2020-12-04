@@ -19,7 +19,6 @@
                 </v-row>
               </v-container>
             </v-card-title>
-
             <v-card-text>
               <v-form>
                 <v-text-field
@@ -56,13 +55,34 @@
             </v-card-text>
             <v-card-actions>
               <v-container>
-                <v-row justify="end">
+                <v-row justify="space-between">
+                  <span
+                    :style="{
+                      color:
+                        loginMessage === 'username or password error!' ||
+                        loginMessage === 'Server had an error!'
+                          ? 'red'
+                          : 'green',
+                    }"
+                    >{{ loginMessage }}</span
+                  >
                   <v-btn color="info" @click="clear()">
                     Clear
                   </v-btn>
                 </v-row>
                 <v-row class="mt-6">
-                  <v-btn block color="primary" @click="submit"> Login </v-btn>
+                  <v-btn
+                    block
+                    color="primary"
+                    :loading="loginBtnLoading"
+                    :disabled="loginBtnLoading"
+                    @click="loginBtnLoader = 'loginBtnLoading'"
+                  >
+                    Login
+                    <template v-slot:loginBtnLoader>
+                      <span>Loading...</span>
+                    </template>
+                  </v-btn>
                 </v-row>
                 <v-row class="my-6">
                   <v-btn
@@ -95,14 +115,15 @@ export default {
     password: { required, minLength: minLength(8), maxLength: maxLength(20) },
   },
 
-  data() {
-    return {
-      username: '',
-      password: '',
-      isShowPassword: false,
-      isRemember: false,
-    };
-  },
+  data: () => ({
+    username: '',
+    password: '',
+    isShowPassword: false,
+    isRemember: false,
+    loginBtnLoader: null,
+    loginBtnLoading: false,
+    loginMessage: '',
+  }),
 
   computed: {
     usernameErrors() {
@@ -126,17 +147,74 @@ export default {
       return errors;
     },
   },
+  watch: {
+    loginBtnLoader() {
+      // const l = this.loginBtnLoader;
+      // this[l] = false;
+      if (this.loginBtnLoader !== null) {
+        const l = this.loginBtnLoader;
+        this[l] = !this[l];
+        this.onSubmit();
+        // this.loginBtnLoader = null;
+      }
+    },
+  },
 
   methods: {
-    submit() {
+    onSubmit() {
       this.$v.$touch();
+      if (
+        !this.$v.username.required ||
+        !this.$v.username.minLength ||
+        !this.$v.username.maxLength ||
+        !this.$v.password.required ||
+        !this.$v.password.minLength ||
+        !this.$v.password.maxLength
+      )
+        return false;
       console.log(this.username, this.password, this.isRemember);
+      this.$api.user
+        .login(this.username, this.password)
+        .then(resp => {
+          console.log(resp);
+          this.loginMessage = resp.data.message;
+          console.log(resp.data.message);
+          const l = this.loginBtnLoader;
+          this[l] = !this[l];
+          // this.loginBtnLoader = null;
+          // const l = this.loginBtnLoader;
+          // this[l] = false;
+          // this.store. = ;
+          let receivedData = resp.data.data;
+          let user = {
+            userId: receivedData.userId,
+            username: receivedData.username,
+            role: receivedData.role,
+            updatedTime: receivedData.updatedTime,
+            avatarUrl: receivedData.avatarUrl,
+          };
+          // console.log(user);
+          this.$store.commit('user/setUser', user);
+          console.log(this.$store.getters['user/getRole']);
+          this.$router.push('/Home/');
+        })
+        .catch(err => {
+          this.loginMessage = 'Server had an error!';
+          console.log(err);
+          const l = this.loginBtnLoader;
+          this[l] = !this[l];
+          // this.loginBtnLoader = null;
+          // const l = this.loginBtnLoader;
+          // this[l] = false;
+        });
     },
     clear() {
+      console.log(this.$store);
       this.$v.$reset();
       this.username = '';
       this.password = '';
       this.isRemember = false;
+      this.loginMessage = '';
     },
   },
 };

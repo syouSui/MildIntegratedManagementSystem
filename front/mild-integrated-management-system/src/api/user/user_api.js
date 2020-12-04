@@ -1,6 +1,5 @@
 import store from '@/store';
 import axiosForVuePlugin from '@/plugins/axios';
-// eslint-disable-next-line no-unused-vars
 let axios = axiosForVuePlugin.axios;
 
 let user = {
@@ -9,7 +8,7 @@ let user = {
     let role = store.getters['user/getState'];
     // -1 means user role was not stored in vuex.
     // So we should send request to back system to get it.
-    if (role === -1) {
+    if (role === -1 || role === undefined) {
       // todo: This is temporary values for development.
       role = 2;
       // todo:
@@ -18,6 +17,11 @@ let user = {
     }
     return role;
   },
+  login: (username, password) =>
+    axios.post('/User/Login', {
+      username: username,
+      password: password,
+    }),
   // getMd(category, grade, fileName) {
   //   console.log(`${category}\t${grade}\t${fileName}`);
   //   // return vue.$http.post('/index/test.md', null);
