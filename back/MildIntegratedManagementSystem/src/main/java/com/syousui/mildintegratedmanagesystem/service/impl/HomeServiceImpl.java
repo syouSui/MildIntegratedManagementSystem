@@ -37,16 +37,51 @@ public class HomeServiceImpl implements HomeService {
             List<Integer> homeTypeIdList ) {
         PageHelper.startPage( pageNum, pageSize );
         List<Home> homeList = homeMapper.selectSelective(
-                homeId==null || homeId == 0 ? null : homeId,
+                homeId == null || homeId == 0 ? null : homeId,
                 "".equals( title ) ? null : title,
-                priceFrom==null || priceFrom == 0.0 ? null : priceFrom,priceTo==null || priceTo == 0.0 ? null : priceTo,
+                priceFrom == null || priceFrom == 0.0 ? null : priceFrom, priceTo == null || priceTo == 0.0 ? null : priceTo,
                 dateFrom, dateTo,
-                homeTypeIdList
+                homeTypeIdList.size( ) == 0 ? null : homeTypeIdList
         );
         return new Page(
                 new PageInfo<>( homeList )
         );
     }
+
+    @Override
+    public int update (
+            Integer homeId,
+            String title,
+            Double price,
+            Date updatedDate,
+            Integer homeTypeId,
+            Boolean isForceUpdatedWithHomeId ) {
+        Home home = new Home(
+                        homeId,
+                        "".equals( title ) ? null : title,
+                        price == null || price == 0.0 ? null : price,
+                        updatedDate,
+                        homeTypeId == null || homeTypeId == 0 ? null : homeTypeId
+                );
+        return isForceUpdatedWithHomeId ? homeMapper.updateByPrimaryKey( home ) : homeMapper.updateByPrimaryKeySelective( home ) ;
+
+    }
+    @Override
+    public int insert ( Integer homeId, String title, Double price, Date updatedDate, Integer homeTypeId, Boolean isForceInsert ) {
+        Home home = new Home(
+                homeId,
+                "".equals( title ) ? null : title,
+                price == null || price == 0.0 ? null : price,
+                updatedDate,
+                homeTypeId == null || homeTypeId == 0 ? null : homeTypeId
+        );
+        return isForceInsert  ? homeMapper.insert( home ) : homeMapper.insertSelective( home ) ;
+    }
+    @Override
+    public int delete ( Integer homeId ) {
+        return homeMapper.deleteByPrimaryKey( homeId );
+    }
+
 
 //    @Override
 //    public Page selectAll ( int pageNum, int pageSize ) {

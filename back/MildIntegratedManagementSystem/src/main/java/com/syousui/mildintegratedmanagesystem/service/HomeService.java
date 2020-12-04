@@ -1,6 +1,7 @@
 package com.syousui.mildintegratedmanagesystem.service;
 
 import com.syousui.mildintegratedmanagesystem.pojo.dto.Page;
+import io.swagger.models.auth.In;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.Date;
@@ -23,6 +24,26 @@ public interface HomeService {
                            Date dateFrom, Date dateTo,
                            List<Integer> homeTypeIdList
     );
+
+   int update (
+            Integer homeId,
+            String title,
+            Double price,
+            Date updatedDate,
+            Integer homeTypeId,
+            Boolean isForceUpdatedWithHomeId );
+
+    int insert (
+            Integer homeId,
+            String title,
+            Double price,
+            Date updatedDate,
+            Integer homeTypeId,
+            Boolean isForceInsert );
+
+    int delete (
+            Integer homeId );
+
 //    Page selectAll ( int pageNum, int pageSize );
 //
 //    Page selectByPrimaryKey ( int pageNum, int pageSize, Integer homeId );

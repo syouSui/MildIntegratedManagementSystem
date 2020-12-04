@@ -5,8 +5,11 @@ import com.syousui.mildintegratedmanagesystem.mapper.UserMapper;
 import com.syousui.mildintegratedmanagesystem.pojo.dto.Page;
 import com.syousui.mildintegratedmanagesystem.pojo.po.Home;
 import com.syousui.mildintegratedmanagesystem.pojo.po.User;
+import com.syousui.mildintegratedmanagesystem.pojo.vo.ResultVo;
+import com.syousui.mildintegratedmanagesystem.service.HomeService;
 import com.syousui.mildintegratedmanagesystem.service.UserService;
 import com.syousui.mildintegratedmanagesystem.utils.DateUtil;
+import com.syousui.mildintegratedmanagesystem.utils.JsonUtil;
 import com.syousui.mildintegratedmanagesystem.utils.SpringUtil;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -91,6 +94,19 @@ class MildIntegratedManageSystemApplicationTests {
 //        System.out.println( null==0 );
 //        System.out.println( DateUtil.getSystemTime() );
         System.out.println( new Date() );
+    }
+
+    @Test
+    public void testSelectHome () {
+        List pageContentList = SpringUtil.getBean( HomeService.class ).selectSelective(
+                1, 10,
+                null,
+                "s",
+                null, null,
+                null, null,
+                null
+        ).getContent( );
+        System.out.println( pageContentList );
     }
 
 }
