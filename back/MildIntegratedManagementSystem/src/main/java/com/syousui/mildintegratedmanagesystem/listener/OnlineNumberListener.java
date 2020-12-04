@@ -36,6 +36,7 @@ public class OnlineNumberListener implements ServletContextListener, HttpSession
 
     @Override
     public void sessionCreated ( HttpSessionEvent se ) {
+        WebUtil.setSession( se.getSession() );
         nowNum = WebUtil.getOnlineNumber( ) + 1;
         WebUtil.setOnlineNumber( nowNum );
         nowNumMax = WebUtil.getMaxOnlineNumber( );
@@ -53,6 +54,7 @@ public class OnlineNumberListener implements ServletContextListener, HttpSession
                 Math.max( nowNumMax, nowNum )
         );
         WebUtil.logOut( );
+        WebUtil.setSession( null );
     }
 
     @Override

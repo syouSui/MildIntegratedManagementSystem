@@ -5,10 +5,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 
-import javax.servlet.ServletContextEvent;
-import javax.servlet.ServletContextListener;
-import javax.servlet.ServletRequestEvent;
-import javax.servlet.ServletRequestListener;
 import javax.servlet.http.*;
 import java.util.LinkedList;
 import java.util.List;
@@ -36,7 +32,7 @@ public class WebUtil{
     @Autowired
     private static HttpServletResponse response;
 
-    private static List<User> userList = null;
+    private static List<User> userList = new LinkedList<User>();
 
     private static long onlineNumber = 0;
 
@@ -87,8 +83,8 @@ public class WebUtil{
     }
 
     // 业务逻辑
-
     public static void login ( User user ) {
+        if ( userList.contains( user ) ) return;
         userList.add( user );
         session.setAttribute( "USER", user );
     }

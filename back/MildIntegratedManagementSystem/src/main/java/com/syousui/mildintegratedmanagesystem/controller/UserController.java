@@ -52,6 +52,7 @@ public class UserController {
         if ( pageContentList.size( ) == 1 ) {
             user = (User) pageContentList.get( 0 );
             WebUtil.login( user );
+            user.setPassword( null );
         } else {
             user = null;
         }
@@ -59,7 +60,7 @@ public class UserController {
                 new ResultVo(
                         user != null ? ResultVo.CODE_SUCCESS : ResultVo.CODE_FAILED,
                         user != null ? "login successfully!" : "username or password error!",
-                        null
+                        user
                 )
         );
     }
