@@ -11,6 +11,7 @@ const getters = {
 };
 const mutations = {
   setUser: (state, playLoad) => {
+    // if (playLoad.userId === null) console.log('1111113123');
     state.user = {
       userId: playLoad.userId,
       username: playLoad.username,
@@ -20,6 +21,10 @@ const mutations = {
     };
     console.log(state.user);
     state.role = state.user.role;
+  },
+  removeUser: state => {
+    state.user = null;
+    state.role = -1;
   },
 };
 const actions = {};

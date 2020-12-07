@@ -118,17 +118,29 @@ const router = new VueRouter({
 });
 
 router.beforeEach((to, from, next) => {
-  console.log(to.name);
-  console.log(api.name);
+  console.log('to.name: ' + to.name);
+  console.log(to);
+  // console.log(api.name);
+  let role = api.user.getRole();
+  console.log(role);
   if (to.matched.length === 0) {
     next('/404');
+  } else if (to.path.indexOf('/Home') !== -1) {
+    console.log('enter home page');
+    if (role !== -1) next();
+    else next('/Login');
   } else if (to.name === 'User') {
     console.log('enter user page');
-    // should check the role of current user.
-    // But now, for use temp variable role for development.
-    let role = api.user.getRole();
-    if (role) next();
+    if (role === 1 || role === 2) next();
     else next('/403');
+  } else if (to.name === 'Login') {
+    console.log('enter login page');
+    if (role !== -1) next('/Home');
+    else next();
+  } else if (to.name === 'Register') {
+    console.log('enter register page');
+    if (role !== -1) next('/Home');
+    else next();
   } else next();
 });
 

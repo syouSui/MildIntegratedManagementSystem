@@ -413,8 +413,19 @@ export default {
       screenfull.toggle();
     },
     logout() {
-      localStorage.removeItem('token');
-      this.$router.replace('/Login');
+      // localStorage.removeItem('token');
+      // this.$router.replace('/Login');
+      this.$api.user
+        .logout()
+        .then(resp => {
+          console.log(resp.data);
+          this.$store.commit('user/removeUser');
+          console.log(this.$store.getters['user/getRole']);
+          this.$router.replace('/Login');
+        })
+        .catch(err => {
+          console.log(err);
+        });
     },
     showMenu(e) {
       e.preventDefault();

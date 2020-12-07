@@ -5,12 +5,12 @@ let axios = axiosForVuePlugin.axios;
 let user = {
   name: 'user',
   getRole() {
-    let role = store.getters['user/getState'];
+    let role = store.getters['user/getRole'];
     // -1 means user role was not stored in vuex.
     // So we should send request to back system to get it.
     if (role === -1 || role === undefined) {
       // todo: This is temporary values for development.
-      role = 2;
+      // role = 2;
       // todo:
       // vue.axios.get
       // store.getters['user/getState'] =
@@ -22,6 +22,11 @@ let user = {
       username: username,
       password: password,
     }),
+  logout: userId =>
+    axios.post('/User/Logout', {
+      userId: userId,
+    }),
+
   // getMd(category, grade, fileName) {
   //   console.log(`${category}\t${grade}\t${fileName}`);
   //   // return vue.$http.post('/index/test.md', null);
