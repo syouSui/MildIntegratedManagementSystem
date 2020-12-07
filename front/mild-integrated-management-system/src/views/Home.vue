@@ -243,7 +243,8 @@
       </v-menu>
 
       <keep-alive>
-        <transition name="fade">
+        <transition name="quickOutIn">
+          <!--        <transition>-->
           <router-view app></router-view>
         </transition>
       </keep-alive>
@@ -479,3 +480,24 @@ export default {
   },
 };
 </script>
+
+<style scoped lang="css">
+.quickOutIn-enter {
+  opacity: 0;
+}
+.quickOutIn-enter-active {
+  transition: 0.5s;
+}
+.quickOutIn-enter-to {
+  opacity: 1;
+}
+.quickOutIn-leave {
+  opacity: 1;
+}
+.quickOutIn-leave-to {
+  opacity: 0;
+}
+.quickOutIn-leave-active {
+  transition: 0;
+}
+</style>

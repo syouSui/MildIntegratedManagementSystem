@@ -119,7 +119,7 @@ const router = new VueRouter({
 
 router.beforeEach((to, from, next) => {
   console.log('to.name: ' + to.name);
-  console.log(to);
+  // console.log(to);
   // console.log(api.name);
   let role = api.user.getRole();
   console.log(role);

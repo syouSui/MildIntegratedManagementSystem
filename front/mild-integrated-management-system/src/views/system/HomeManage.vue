@@ -329,6 +329,7 @@
             </v-btn>
           </template>
         </v-data-table>
+        <!--        </transition>-->
         <v-snackbar v-model="snack" :timeout="3000" :color="snackColor">
           {{ snackText }}
           <template v-slot:action="{ attrs }">
