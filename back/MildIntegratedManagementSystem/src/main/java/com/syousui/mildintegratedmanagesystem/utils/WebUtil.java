@@ -5,6 +5,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 
+import javax.servlet.ServletContextEvent;
+import javax.servlet.ServletContextListener;
+import javax.servlet.ServletRequestEvent;
+import javax.servlet.ServletRequestListener;
 import javax.servlet.http.*;
 import java.util.LinkedList;
 import java.util.List;
@@ -19,7 +23,7 @@ import java.util.List;
  */
 
 @Component
-public class WebUtil{
+public class WebUtil implements ServletContextListener, HttpSessionListener, ServletRequestListener {
     @Autowired
     private static HttpSession session;
 
@@ -32,11 +36,15 @@ public class WebUtil{
     @Autowired
     private static HttpServletResponse response;
 
-    private static List<User> userList = new LinkedList<User>();
+    private static List<User> userList = new LinkedList<User>( );
 
     private static long onlineNumber = 0;
 
     private static long maxOnlineNumber = 0;
+
+//    private static long nowNum;
+//
+//    private static long nowNumMax;
 
     // default getter/setter
     public static HttpSession getSession ( ) {
@@ -82,10 +90,54 @@ public class WebUtil{
         WebUtil.maxOnlineNumber = maxOnlineNumber;
     }
 
+    //    implements methods
+    @Override
+    public void contextInitialized ( ServletContextEvent sce ) {
+        WebUtil.setUserList( new LinkedList<>( ) );
+    }
+
+    @Override
+    public void contextDestroyed ( ServletContextEvent sce ) {
+    }
+
+    @Override
+    public void sessionCreated ( HttpSessionEvent se ) {
+        WebUtil.setSession( se.getSession( ) );
+        long nowNum = WebUtil.getOnlineNumber( ) + 1;
+        WebUtil.setOnlineNumber( nowNum );
+        long nowNumMax = WebUtil.getMaxOnlineNumber( );
+        WebUtil.setMaxOnlineNumber(
+                Math.max( nowNumMax, nowNum )
+        );
+    }
+
+    @Override
+    public void sessionDestroyed ( HttpSessionEvent se ) {
+        long nowNum = WebUtil.getOnlineNumber( ) + 1;
+        WebUtil.setOnlineNumber( nowNum );
+        long nowNumMax = WebUtil.getMaxOnlineNumber( );
+        WebUtil.setMaxOnlineNumber(
+                Math.max( nowNumMax, nowNum )
+        );
+        WebUtil.logOut( );
+        WebUtil.setSession( null );
+    }
+
+    @Override
+    public void requestInitialized ( ServletRequestEvent sre ) {
+
+    }
+
+    @Override
+    public void requestDestroyed ( ServletRequestEvent sre ) {
+
+    }
+
     // 业务逻辑
     public static void login ( User user ) {
         if ( userList.contains( user ) ) return;
         userList.add( user );
+        System.out.println( user );
         session.setAttribute( "USER", user );
     }
 
@@ -95,7 +147,7 @@ public class WebUtil{
             userList.remove( session.getAttribute( "USER" ) );
             session.removeAttribute( "USER" );
         } catch ( Exception e ) {
-            e.printStackTrace();
+            e.printStackTrace( );
             state = false;
         }
         return state;

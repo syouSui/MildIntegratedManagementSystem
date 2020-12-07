@@ -13,6 +13,7 @@ import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpSession;
 import java.util.Date;
 import java.util.List;
 
@@ -35,7 +36,7 @@ public class UserController {
             @ApiImplicitParam ( name = "password", value = "密码", required = true, paramType = "query", dataType = "JsonNode" )
     } )
     @PostMapping ( "/Login" )
-    public String login ( @RequestBody JsonNode jsonNode ) {
+    public String login ( @RequestBody JsonNode jsonNode, HttpSession httpSession) {
         System.out.println( "login:\t" + jsonNode.at( "/username" ).asText( ) + "\t" + jsonNode.at( "/password" ).asText( ) );
         List pageContentList = SpringUtil.getBean( UserService.class ).selectSelective(
                 1, 1,
@@ -71,6 +72,7 @@ public class UserController {
     } )
     @PostMapping ( "/Logout" )
     public String logout ( ) {
+//        System.out.println( WebUtil.fetchUser() + " -> logout!" );
         boolean state = WebUtil.logOut( );
         return JsonUtil.beanToJson(
                 new ResultVo(

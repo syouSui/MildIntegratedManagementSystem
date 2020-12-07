@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @MapperScan ( "com.syousui.mildintegratedmanagesystem.mapper" )
 @ComponentScan ( "com.syousui.mildintegratedmanagesystem.mapper" )
 @ComponentScan ( "com.syousui.mildintegratedmanagesystem.service" )
+@ComponentScan ( "com.syousui.mildintegratedmanagesystem.utils" )
 @EnableTransactionManagement ()
 public class MildIntegratedManageSystemApplication {
 
