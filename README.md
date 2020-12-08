@@ -20,6 +20,8 @@
 
 - vue-i18n国际化 ( 带实现)
 
+- vuelidate 表单规则验证
+
 - ESlint + Prettier
 
 - Screenful.js
@@ -31,9 +33,13 @@
 
 
 - 基于SpringBoot 的 SSM 框架
+
 - Swagger API管理
+
 - mybatis-generator-maven-plugin ( MyBats 自动生成 mapper 插件)
+
 - PageHelper 分页插件
+
 - Jackson ( 实现 Json 的序列化与反序列化 )
 
 
