@@ -18,7 +18,7 @@
 
 - Axios
 
-- vue-i18n国际化 ( 带实现)
+- vue-i18n国际化 ( 待实现 )
 
 - vuelidate 表单规则验证
 
