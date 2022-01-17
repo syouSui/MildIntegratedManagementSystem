@@ -7,6 +7,9 @@ import com.syousui.mildintegratedmanagesystem.utils.DateUtil;
 import com.syousui.mildintegratedmanagesystem.utils.JsonUtil;
 import com.syousui.mildintegratedmanagesystem.utils.SpringUtil;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
@@ -25,6 +28,10 @@ import java.util.Date;
 @RestController ()
 @RequestMapping ( "/Home" )
 public class HomeController {
+    @ApiOperation ( value = "插入房屋信息" )
+    @ApiImplicitParams ( {
+            @ApiImplicitParam ( name = "homeId", value = "房屋类", required = true, paramType = "query", dataType = "JsonNode" ),
+    } )
     @PostMapping ( "/insert" )
     public String insert ( @RequestBody JsonNode jsonNode ) {
         System.out.println( "home update." );
@@ -44,9 +51,13 @@ public class HomeController {
         );
     }
 
+    @ApiOperation ( value = "删除房屋信息" )
+    @ApiImplicitParams ( {
+            @ApiImplicitParam ( name = "homeId", value = "房屋类", required = true, paramType = "query", dataType = "JsonNode" ),
+    } )
     @PostMapping ( "/delete" )
     public String delete ( @RequestBody JsonNode jsonNode ) {
-        System.out.println( "home update." );
+        System.out.println( "home delete." );
         return JsonUtil.beanToJson(
                 new ResultVo(
                         ResultVo.CODE_SUCCESS,
@@ -58,6 +69,10 @@ public class HomeController {
         );
     }
 
+    @ApiOperation ( value = "删除房屋信息" )
+    @ApiImplicitParams ( {
+            @ApiImplicitParam ( name = "Home", value = "房屋类", required = true, paramType = "query", dataType = "JsonNode" ),
+    } )
     @PostMapping ( "/update" )
     public String update ( @RequestBody JsonNode jsonNode ) {
         System.out.println( "home update." );
@@ -77,6 +92,10 @@ public class HomeController {
         );
     }
 
+    @ApiOperation ( value = "查询房屋信息" )
+    @ApiImplicitParams ( {
+            @ApiImplicitParam ( name = "Home", value = "房屋类", required = true, paramType = "query", dataType = "JsonNode" ),
+    } )
     @PostMapping ( "/" )
     public String select ( @RequestBody JsonNode jsonNode ) {
         System.out.println( "home select." );
